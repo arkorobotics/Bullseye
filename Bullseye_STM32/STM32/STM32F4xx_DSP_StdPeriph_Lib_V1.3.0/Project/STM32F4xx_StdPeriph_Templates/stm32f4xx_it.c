@@ -71,7 +71,7 @@ int last_error5 = 0;
 unsigned char PWM_Out5;
 int feedback = 0;
 uint32_t freq5;
-int CMD = 1650;
+int CMD = 3300;
 
 extern void SetLeftFrontWheelPwm(int);
 /* Private function prototypes -----------------------------------------------*/
