@@ -60,6 +60,20 @@ __IO uint16_t uhCaptureNumber = 0;
 __IO uint32_t uwCapture = 0;
 __IO uint32_t uwTIM1Freq = 0;
 
+
+int error5 = 0;
+int integral5 = 0;
+int diff5 = 0;
+int last_error5 = 0;
+	int Kp = 1;
+	double Ki = 0.1;
+	double Kd = 0.1;
+unsigned char PWM_Out5;
+int feedback = 0;
+uint32_t freq5;
+int CMD = 1650;
+
+extern void SetLeftFrontWheelPwm(int);
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void TimingDelay_Decrement(void);
@@ -290,6 +304,32 @@ void TIM5_IRQHandler(void)
     DutyCycle5 = 0;
     Frequency5 = 0;
   }
+}
+
+void TIM7_IRQHandler(void)
+{ 
+	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET)
+{
+TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+  if(Frequency5>3300)
+	{freq5 = 3300;}
+	else {freq5 = Frequency5;}
+	
+	error5 = CMD - freq5; //-1050
+	integral5 = integral5 + error5;//-1050
+	if (integral5> 3300)
+	{integral5 = 3300;}
+		if (integral5<0)
+	{integral5 = 0;}
+	diff5 = (error5 - last_error5);//-1050
+	PWM_Out5 = (((0.05)*error5)+((0.01)*integral5) + ((0)*diff5));
+	if (PWM_Out5>100)
+		{PWM_Out5=100;}
+	if (PWM_Out5<0)
+		{PWM_Out5=0;}
+	last_error5 = error5;
+SetLeftFrontWheelPwm(PWM_Out5);
+	}
 }
 
 /**

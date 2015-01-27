@@ -1,21 +1,29 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
+#include <math.h>
 
-TIM_ICInitTypeDef  TIM_ICInitStructure;
 static unsigned char duty = 0;
 static unsigned char rightFrontDuty = 0;
 static unsigned char rightBackDuty = 0;
 static unsigned char leftFrontDuty = 0;
 static unsigned char leftBackDuty = 0;
 static unsigned char currDuty = 0;
+uint16_t PrescalerValue = 0;
+static __IO uint32_t uwTimingDelay;
+
 void init(void);
 void PreScale_TIME_Init(void);
-TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-TIM_OCInitTypeDef  TIM_OCInitStructure;
-uint16_t PrescalerValue = 0;
 void TIM_Config(void);
 void TMR3_PWM_Init(void);
 void mainInit(void);
+static void Delay(__IO uint32_t nTime);
+void TIM3_Config(void);
+
+TIM_ICInitTypeDef  TIM_ICInitStructure;
+TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+TIM_OCInitTypeDef  TIM_OCInitStructure;
+RCC_ClocksTypeDef RCC_Clocks;
+
 extern uint32_t Frequency4;
 extern uint32_t Frequency2;
 extern uint32_t Frequency5;
@@ -26,20 +34,11 @@ extern uint32_t uwTIM1Freq;
 #define Set_IN1					GPIOE->BSRRL = (1<<2)
 #define Clear_IN1				GPIOE->BSRRH = (1<<2)
 
-static __IO uint32_t uwTimingDelay;
-RCC_ClocksTypeDef RCC_Clocks;
-static void Delay(__IO uint32_t nTime);
-void TIM3_Config(void);
-///////////////////////////////////////////////////////////////////////////////
-/*-----------------------------Main Init-------------------------------------*/
 void mainInit(){
 TMR3_PWM_Init();
 TIM3_Config();
 PreScale_TIME_Init();
 }
-///////////////////////////////////////////////////////////////////////////////
-/*-------------------------------PWM-----------------------------------------*/
-/*******************************PWM Code*********************************/
 int setpulse(int k){
 		uint16_t p=0;
 		return (p+100);
@@ -49,11 +48,6 @@ int setpwm(){
 		uint16_t p=100;
 		return (p*6.65);
 	}
-	
-/******************************************************************************
-* TIM_PWMOutput code from template examples, specs given in folder
-******************************************************************************/
-
 void TMR3_PWM_Init(void){
 	 /* Compute the prescaler value */
   PrescalerValue = (uint16_t) ((SystemCoreClock /2) / 21000000) - 1;
@@ -111,11 +105,6 @@ void TMR3_PWM_Init(void){
   /* TIM3 enable counter */
   TIM_Cmd(TIM3, ENABLE);
 }
-
-
-/******************************************************************************
-* TIM_PWMOutput code from template examples, specs given in folder
-******************************************************************************/
 void TIM3_Config(void){
   GPIO_InitTypeDef GPIO_InitStructure;
 
@@ -140,27 +129,26 @@ void TIM3_Config(void){
   GPIO_PinAFConfig(GPIOC, GPIO_PinSource9, GPIO_AF_TIM3); 
 }
 
-void SetRightFrontWheelPwm(unsigned char PwmDutyCycle){//only sets Oc1[Pc6]                        currently using C6 need to add C7 C8
+void SetRightFrontWheelPwm(unsigned char PwmDutyCycle){
 	TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	TIM_OC1Init(TIM3, &TIM_OCInitStructure);																
 	}
 	
-	void SetRightBackWheelPwm(unsigned char PwmDutyCycle){
+void SetRightBackWheelPwm(unsigned char PwmDutyCycle){
   TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	TIM_OC2Init(TIM3, &TIM_OCInitStructure);
 	}
 	
-		void SetLeftFrontWheelPwm(unsigned char PwmDutyCycle){
+void SetLeftFrontWheelPwm(unsigned char PwmDutyCycle){
   TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
 	}
 	
-		void SetLeftBackWheelPwm(unsigned char PwmDutyCycle){
+void SetLeftBackWheelPwm(unsigned char PwmDutyCycle){
   TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	TIM_OC4Init(TIM3, &TIM_OCInitStructure);
 	}
-	//A15, B3, B10, B11	
-	void PreScale_TIME_Init(void){
+void PreScale_TIME_Init(void){
 		/* Compute the prescaler value */
   PrescalerValue = (uint16_t) ((SystemCoreClock /2) / 21000000) - 1;
 
@@ -261,21 +249,23 @@ unsigned char PWM_Out4;
 rightFrontDuty = PWM_Out4;
 }
 void FrontLeftErrorControl(){  //Timer 5
-uint32_t error5;
-uint32_t integral5;
-uint32_t diff5;
-uint32_t last_error5;
-unsigned char PWM_Out5;
-
-//	error5 = ? - Frequency5;
+//		if(Frequency5>3300)
+//	{freq5 = 3300;}
+//	else {freq5 = Frequency5;}
+//	feedback = (float)freq5/3300;
+//	feedback = feedback * 100;
+////	feedback = (float)freq5/3250;
+////	feedback = (float)feedback * 2;
+//	error5 = leftFrontDuty - feedback;
+////	error5 = error5 * 100;
 //	integral5 = integral5 + error5;
-//	if (integral5> ?)
-//		integral5 = ?;
+//	if (integral5> 100)
+//		integral5 = 100;
 //	diff5 = (error5 - last_error5);
-//	PWM_Out5 = [((Kp)*error5)+((Ki)*integral5) + ((Kd)*diff5)];
-//	last_error5 = error5;
-	
-leftFrontDuty = PWM_Out5;
+//	PWM_Out5 = (((Kp)*error5)+((Ki)*integral5) + ((Kd)*diff5));
+////	last_error5 = error5;
+////	output = leftFrontDuty+ PWM_Out5;
+//SetLeftFrontWheelPwm(PWM_Out5);
 }
 void BackRightErrorControl(){  //Timer 2
 uint32_t error2;
@@ -310,16 +300,98 @@ unsigned char PWM_Out1;
 leftBackDuty=PWM_Out1;
 }
 
-int main(void)
-{
+void left_Alignment(){
+uint32_t freq1, freq2;
+	int pwm1 = 0;
+int	pwm2 = 1;
+	uint32_t error;
+uint32_t integral;
+uint32_t diff;
+uint32_t old_error;
+uint32_t kp;
+uint32_t ki;
+uint32_t kd;
+unsigned char pwmout;
+//	if (Frequency5>uwTIM1Freq){
+//		freq1=Frequency5;
+//		freq2=uwTIM1Freq;
+//		pwm2=1;
+//		pwm1=0;
+//	}
+//	else{
+//		freq1=uwTIM1Freq;
+//		freq2=Frequency5;
+//		pwm1=0;
+//		pwm2=1;
+//	}
+//	error = freq1-freq2;
+//	integral = integral + error;
+//	diff=error-old_error;
+//	pwmout = [((kp)*error)+((ki)*integral) + ((kd)*diff)];
+//	old_error=error;
+//	if (pwm1)
+//	{leftFrontDuty=pwmout;}
+//	if(pwm2)
+//	{leftBackDuty=pwmout;}
+}
+void right_Alignment(){}
+void front_Alignment(){}
+void back_Alignment(){}
+
+void test(int CMD){
+//  if(Frequency5>3300)
+//	{freq5 = 3300;}
+//	else {freq5 = Frequency5;}
+//	
+//	error5 = CMD - freq5; //-1050
+//	integral5 = integral5 + error5;//-1050
+//	if (integral5> 3300)
+//	{integral5 = 3300;}
+//		if (integral5<0)
+//	{integral5 = 0;}
+//	diff5 = (error5 - last_error5);//-1050
+//	PWM_Out5 = (((0.5)*error5)+((0.005)*integral5) + ((0)*diff5));
+//	if (PWM_Out5>100)
+//		{PWM_Out5=100;}
+//	if (PWM_Out5<0)
+//		{PWM_Out5=0;}
+//	last_error5 = error5;
+//SetLeftFrontWheelPwm(PWM_Out5);
+}
+	void TIM7_Config(){
+NVIC_InitTypeDef NVIC_InitStructure;
+/* Enable the TIM8 gloabal Interrupt */
+NVIC_InitStructure.NVIC_IRQChannel = TIM7_IRQn;
+NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+NVIC_Init(&NVIC_InitStructure);
+ 
+/* TIM2 clock enable */
+RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
+/* Time base configuration */
+TIM_TimeBaseStructure.TIM_Period = 10000 - 1; // 1 MHz down to 1 KHz (1 ms)
+TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
+TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+TIM_TimeBaseInit(TIM7, &TIM_TimeBaseStructure);
+/* TIM IT enable */
+TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
+/* TIM2 enable counter */
+TIM_Cmd(TIM7, ENABLE); 
+	}
+int main(void){
 		mainInit();
 	  DriveInit();
+	  leftFrontDuty=50;
+	SetLeftFrontWheelPwm(leftFrontDuty);
+	
 
 //try a couple test functions 
-	duty=50;
-	Forward_Straight(duty);
-	Backward_Straight(duty);
-
+//	duty=50;
+//	Forward_Straight(duty);
+//	Backward_Straight(duty);
+TIM7_Config();
 TIM_Config();	
   
   TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
@@ -358,28 +430,20 @@ TIM_Config();
 	TIM_Cmd(TIM2, ENABLE);
 	TIM_Cmd(TIM5, ENABLE);
 	TIM_Cmd(TIM1, ENABLE);
-
+	
   /* Enable the CC2 Interrupt Request */
    TIM_ITConfig(TIM4, TIM_IT_CC2, ENABLE);
 	 TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);	
    TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
-   TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	
-	 
-/*Error control must be constant*/
+   TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	 
   while (1){
-		FrontLeftErrorControl();
-		SetLeftFrontWheelPwm(leftFrontDuty);
-		FrontRightErrorControl();
-		SetRightFrontWheelPwm(rightFrontDuty);
-		BackLeftErrorControl();
-		SetRightBackWheelPwm(rightBackDuty);
-		BackRightErrorControl();
-		SetLeftBackWheelPwm(leftBackDuty);
+  	//FrontLeftErrorControl();
+		//test(2200);
+	//	Delay(10);
 	}
 }
 
-void TIM_Config(void)
-{
+void TIM_Config(void){
   GPIO_InitTypeDef GPIO_InitStructure;
   NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -446,18 +510,15 @@ void TIM_Config(void)
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
-	
 }
 
-void Delay(__IO uint32_t nTime)
-{ 
+void Delay(__IO uint32_t nTime){ 
   uwTimingDelay = nTime;
 
   while(uwTimingDelay != 0);
 }
 
-void TimingDelay_Decrement(void)
-{
+void TimingDelay_Decrement(void){
   if (uwTimingDelay != 0x00)
   { 
     uwTimingDelay--;
