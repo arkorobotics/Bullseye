@@ -7,87 +7,55 @@ C:\Users\Sabrina\ECE_Folders\404_GitHub\Bullseye\Bullseye_STM32\STM32\STM32F4xx_
 Project File Date:  01/26/2015
 
 <h2>Output:</h2>
-Rebuild target 'STM32F40_41xxx'
-compiling system_stm32f4xx.c...
-assembling startup_stm32f40_41xxx.s...
-compiling misc.c...
-compiling stm32f4xx_can.c...
-compiling stm32f4xx_cryp.c...
-compiling stm32f4xx_cryp_des.c...
-compiling stm32f4xx_dac.c...
-compiling stm32f4xx_dcmi.c...
-compiling stm32f4xx_dma2d.c...
-compiling stm32f4xx_flash.c...
-compiling stm32f4xx_fsmc.c...
-compiling stm32f4xx_hash.c...
-compiling stm32f4xx_hash_sha1.c...
-compiling stm32f4xx_iwdg.c...
-compiling stm32f4xx_pwr.c...
-compiling stm32f4xx_rng.c...
-compiling stm32f4xx_sai.c...
-compiling stm32f4xx_spi.c...
-compiling stm32f4xx_tim.c...
-compiling stm32f4xx_wwdg.c...
-compiling stm32f4xx_adc.c...
-compiling stm32f4xx_cryp_aes.c...
-compiling stm32f4xx_dbgmcu.c...
-compiling stm32f4xx_exti.c...
-compiling stm32f4xx_gpio.c...
-compiling stm32f4xx_i2c.c...
-compiling stm32f4xx_rcc.c...
-compiling stm32f4xx_sdio.c...
-compiling stm32f4xx_usart.c...
-compiling stm32f4xx_crc.c...
-compiling stm32f4xx_dma.c...
-compiling stm32f4xx_hash_md5.c...
-compiling stm32f4xx_rtc.c...
-compiling stm32f4xx_cryp_tdes.c...
-compiling stm32f4xx_ltdc.c...
-compiling stm32f4xx_syscfg.c...
+Build target 'STM32F40_41xxx'
 compiling main.c...
-..\main.c(235): warning:  #177-D: variable "error4" was declared but never referenced
-  uint32_t error4;
-..\main.c(236): warning:  #177-D: variable "integral4" was declared but never referenced
-  uint32_t integral4;
-..\main.c(237): warning:  #177-D: variable "diff4" was declared but never referenced
-  uint32_t diff4;
-..\main.c(238): warning:  #177-D: variable "last_error4" was declared but never referenced
-  uint32_t last_error4;
-..\main.c(271): warning:  #177-D: variable "error2" was declared but never referenced
-  uint32_t error2;
-..\main.c(272): warning:  #177-D: variable "integral2" was declared but never referenced
-  uint32_t integral2;
-..\main.c(273): warning:  #177-D: variable "diff2" was declared but never referenced
-  uint32_t diff2;
-..\main.c(274): warning:  #177-D: variable "last_error2" was declared but never referenced
-  uint32_t last_error2;
-..\main.c(287): warning:  #177-D: variable "error1" was declared but never referenced
-  uint32_t error1;
-..\main.c(288): warning:  #177-D: variable "integral1" was declared but never referenced
-  uint32_t integral1;
-..\main.c(289): warning:  #177-D: variable "diff1" was declared but never referenced
-  uint32_t diff1;
-..\main.c(290): warning:  #177-D: variable "last_error1" was declared but never referenced
-  uint32_t last_error1;
-..\main.c(304): warning:  #177-D: variable "freq1" was declared but never referenced
+..\main.c(232): warning:  #177-D: variable "freq1" was declared but never referenced
   uint32_t freq1, freq2;
-..\main.c(304): warning:  #177-D: variable "freq2" was declared but never referenced
+..\main.c(232): warning:  #177-D: variable "freq2" was declared but never referenced
   uint32_t freq1, freq2;
-..\main.c(305): warning:  #177-D: variable "pwm1" was declared but never referenced
+..\main.c(233): warning:  #177-D: variable "pwm1" was declared but never referenced
         int pwm1 = 0;
-..\main.c(306): warning:  #177-D: variable "pwm2" was declared but never referenced
+..\main.c(234): warning:  #177-D: variable "pwm2" was declared but never referenced
   int   pwm2 = 1;
-..\main.c(307): warning:  #177-D: variable "error" was declared but never referenced
+..\main.c(235): warning:  #177-D: variable "error" was declared but never referenced
         uint32_t error;
-..\main.c(308): warning:  #177-D: variable "integral" was declared but never referenced
+..\main.c(236): warning:  #177-D: variable "integral" was declared but never referenced
   uint32_t integral;
-..\main.c(309): warning:  #177-D: variable "diff" was declared but never referenced
+..\main.c(237): warning:  #177-D: variable "diff" was declared but never referenced
   uint32_t diff;
-..\main.c(310): warning:  #177-D: variable "old_error" was declared but never referenced
+..\main.c(238): warning:  #177-D: variable "old_error" was declared but never referenced
   uint32_t old_error;
-..\main.c(311): warning:  #177-D: variable "kp" was declared but never referenced
+..\main.c(239): warning:  #177-D: variable "kp" was declared but never referenced
   uint32_t kp;
-..\main.c(312): warning:  #177-D: variable "ki" was declared but never referenced
+..\main.c(240): warning:  #177-D: variable "ki" was declared but never referenced
+  uint32_t ki;
+..\main.c(241): warning:  #177-D: variable "kd" was declared but never referenced
+  uint32_t kd;
+..\main.c(242): warning:  #177-D: variable "pwmout" was declared but never referenced
+  unsigned char pwmout;
+..\main.c(5): warning:  #177-D: variable "duty" was declared but never referenced
+  static unsigned char duty = 0;
+..\main.c(6): warning:  #177-D: variable "currDuty" was declared but never referenced
+  static unsigned char currDuty = 0;
+..\main.c(419): warning:  #177-D: function "Delay" was declared but never referenced
+  void Delay(__IO uint32_t nTime){ 
+..\main.c: 15 warnings, 0 errors
+linking...
+Program Size: Code=5868 RO-data=424 RW-data=172 ZI-data=1068  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 15 Warning(s).
+1xxx.axf" - 1 Error(s), 15 Warning(s).
+Target not created
+referenced
+  static unsigned char leftBackDuty = 0;
+..\main.c(10): warning:  #177-D: variable "currDuty" was declared but never referenced
+  static unsigned char currDuty = 0;
+..\main.c(426): warning:  #177-D: function "Delay" was declared but never referenced
+  void Delay(__IO uint32_t nTime){ 
+..\main.c: 19 warnings, 0 errors
+linking...
+Program Size: Code=5772 RO-data=424 RW-data=172 ZI-data=1068  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 19 Warning(s).
+er referenced
   uint32_t ki;
 ..\main.c(313): warning:  #177-D: variable "kd" was declared but never referenced
   uint32_t kd;
@@ -106,10 +74,89 @@ compiling main.c...
 ..\main.c(515): warning:  #177-D: function "Delay" was declared but never referenced
   void Delay(__IO uint32_t nTime){ 
 ..\main.c: 30 warnings, 0 errors
-compiling stm32f4xx_it.c...
-..\stm32f4xx_it.c(328): warning:  #186-D: pointless comparison of unsigned integer with zero
-        if (PWM_Out5<0)
-..\stm32f4xx_it.c: 1 warning, 0 errors
 linking...
-Program Size: Code=5424 RO-data=424 RW-data=112 ZI-data=1072  
-".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 31 Warning(s).
+Program Size: Code=5780 RO-data=424 RW-data=176 ZI-data=1072  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 30 Warning(s).
+e.TIM_ICFilter = 0x0;
+..\main.c(347): error:  #79: expected a type specifier
+    TIM_ICInit(TIM1, &TIM_ICInitStructure);
+..\main.c(347): error:  #79: expected a type specifier
+    TIM_ICInit(TIM1, &TIM_ICInitStructure);
+..\main.c(347): error:  #260-D: explicit type is missing ("int" assumed)
+    TIM_ICInit(TIM1, &TIM_ICInitStructure);
+..\main.c(347): error:  #147: declaration is incompatible with "void TIM_ICInit(TIM_TypeDef *, TIM_ICInitTypeDef *)" (declared at line 1080 of "..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_tim.h")
+    TIM_ICInit(TIM1, &TIM_ICInitStructure);
+..\main.c: 1 warning, 30 errors
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 30 Error(s), 1 Warning(s).
+Target not created
+son of unsigned integer with zero
+        if (PWM_Out5<0)
+..\stm32f4xx_it.c(324): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out1<0)
+..\stm32f4xx_it.c(344): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out4<0)
+..\stm32f4xx_it.c(364): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out2<0)
+..\stm32f4xx_it.c: 4 warnings, 0 errors
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 30 Error(s), 5 Warning(s).
+Target not created
+nt last_error5 = 0;
+..\Common.h(8): error:  #65: expected a ";"
+  double Kp = 0.01;
+..\Common.h(9): error:  #65: expected a ";"
+  double Ki = 0.05;
+..\Common.h(10): error:  #65: expected a ";"
+  double Kd = 0.1;
+..\Common.h(12): error:  #65: expected a ";"
+  int feedback = 0;
+..\Common.h(14): warning:  #1-D: last line of file ends without a newline
+  };
+..\Common.h(3): warning:  #64-D: declaration does not declare anything
+  struct{
+..\stm32f4xx_it.c(308): error:  #70: incomplete type is not allowed
+        {errorcontrol5.freq5 = 3300;}
+..\stm32f4xx_it.c(309): error:  #70: incomplete type is not allowed
+        else {errorcontrol5.freq5 = Frequency5;}
+..\stm32f4xx_it.c(311): error:  #70: incomplete type is not allowed
+        errorcontrol5.error5 = CMD - errorcontrol5.freq5; //-1050
+..\stm32f4xx_it.c(311): error:  #70: incomplete type is not allowed
+        errorcontrol5.error5 = CMD - errorcontrol5.freq5; //-1050
+..\stm32f4xx_it.c(312): error:  #70: incomplete type is not allowed
+        errorcontrol5.integral5 = errorcontrol5.integral5 + errorcontrol5.error5;//-1050
+..\stm32f4xx_it.c(312): error:  #70: incomplete type is not allowed
+        errorcontrol5.integral5 = errorcontrol5.integral5 + errorcontrol5.error5;//-1050
+..\stm32f4xx_it.c(312): error:  #70: incomplete type is not allowed
+        errorcontrol5.integral5 = errorcontrol5.integral5 + errorcontrol5.error5;//-1050
+..\stm32f4xx_it.c(313): error:  #70: incomplete type is not allowed
+        if (errorcontrol5.integral5> 3300)
+..\stm32f4xx_it.c(314): error:  #70: incomplete type is not allowed
+        {errorcontrol5.integral5 = 3300;}
+..\stm32f4xx_it.c(315): error:  #70: incomplete type is not allowed
+                if (errorcontrol5.integral5<0)
+..\stm32f4xx_it.c(316): error:  #70: incomplete type is not allowed
+        {errorcontrol5.integral5 = 0;}
+..\stm32f4xx_it.c(317): error:  #70: incomplete type is not allowed
+        errorcontrol5.diff5 = (errorcontrol5.error5 - errorcontrol5.last_error5);//-1050
+..\stm32f4xx_it.c(317): error:  #70: incomplete type is not allowed
+        errorcontrol5.diff5 = (errorcontrol5.error5 - errorcontrol5.last_error5);//-1050
+..\stm32f4xx_it.c(317): error:  #70: incomplete type is not allowed
+        errorcontrol5.diff5 = (errorcontrol5.error5 - errorcontrol5.last_error5);//-1050
+..\stm32f4xx_it.c(318): error:  #70: incomplete type is not allowed
+        errorcontrol5.PWM_Out5 = (((0.05)*errorcontrol5.error5)+((0.01)*errorcontrol5.integral5) + ((0)*errorcontrol5.diff5));
+..\stm32f4xx_it.c(318): error:  #70: incomplete type is not allowed
+        errorcontrol5.PWM_Out5 = (((0.05)*errorcontrol5.error5)+((0.01)*errorcontrol5.integral5) + ((0)*errorcontrol5.diff5));
+..\stm32f4xx_it.c(318): error:  #70: incomplete type is not allowed
+        errorcontrol5.PWM_Out5 = (((0.05)*errorcontrol5.error5)+((0.01)*errorcontrol5.integral5) + ((0)*errorcontrol5.diff5));
+..\stm32f4xx_it.c(318): error:  #70: incomplete type is not allowed
+        errorcontrol5.PWM_Out5 = (((0.05)*errorcontrol5.error5)+((0.01)*errorcontrol5.integral5) + ((0)*errorcontrol5.diff5));
+..\stm32f4xx_it.c(319): error:  #70: incomplete type is not allowed
+        if (errorcontrol5.PWM_Out5>100)
+..\stm32f4xx_it.c(320): error:  #70: incomplete type is not allowed
+                {errorcontrol5.PWM_Out5=100;}
+..\stm32f4xx_it.c(321): error:  #70: incomplete type is not allowed
+        if (errorcontrol5.PWM_Out5<0)
+..\stm32f4xx_it.c(322): error:  #70: incomplete type is not allowed
+                {errorcontrol5.PWM_Out5=0;}
+..\stm32f4xx_it.c: 2 warnings, 30 errors
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 30 Error(s), 32 Warning(s).
+Target not created

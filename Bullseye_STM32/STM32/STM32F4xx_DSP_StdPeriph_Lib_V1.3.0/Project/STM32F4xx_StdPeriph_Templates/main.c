@@ -3,10 +3,6 @@
 #include <math.h>
 
 static unsigned char duty = 0;
-static unsigned char rightFrontDuty = 0;
-static unsigned char rightBackDuty = 0;
-static unsigned char leftFrontDuty = 0;
-static unsigned char leftBackDuty = 0;
 static unsigned char currDuty = 0;
 uint16_t PrescalerValue = 0;
 static __IO uint32_t uwTimingDelay;
@@ -231,74 +227,6 @@ Move_Backward();
 	SetLeftBackWheelPwm(backwardDuty);
 }
 	
-void FrontRightErrorControl(){  //Timer 4
-uint32_t error4;
-uint32_t integral4;
-uint32_t diff4;
-uint32_t last_error4;
-unsigned char PWM_Out4;
-
-//	error4 = ? - Frequency4;
-//	integral4 = integral4 + error4;
-//	if (integral4> ?)
-//		integral4 = ?;
-//	diff4 = (error4 - last_error4);
-//	PWM_Out4 = [((Kp)*error4)+((Ki)*integral4) + ((Kd)*diff4)];
-//	last_error4 = error4;
-	
-rightFrontDuty = PWM_Out4;
-}
-void FrontLeftErrorControl(){  //Timer 5
-//		if(Frequency5>3300)
-//	{freq5 = 3300;}
-//	else {freq5 = Frequency5;}
-//	feedback = (float)freq5/3300;
-//	feedback = feedback * 100;
-////	feedback = (float)freq5/3250;
-////	feedback = (float)feedback * 2;
-//	error5 = leftFrontDuty - feedback;
-////	error5 = error5 * 100;
-//	integral5 = integral5 + error5;
-//	if (integral5> 100)
-//		integral5 = 100;
-//	diff5 = (error5 - last_error5);
-//	PWM_Out5 = (((Kp)*error5)+((Ki)*integral5) + ((Kd)*diff5));
-////	last_error5 = error5;
-////	output = leftFrontDuty+ PWM_Out5;
-//SetLeftFrontWheelPwm(PWM_Out5);
-}
-void BackRightErrorControl(){  //Timer 2
-uint32_t error2;
-uint32_t integral2;
-uint32_t diff2;
-uint32_t last_error2;
-unsigned char PWM_Out2;
-
-//	error2 = ? - Frequency2;
-//	integral2 = integral2 + error2;
-//	if (integral2> ?)
-//		integral2 = ?;
-//	diff2 = (error2 - last_error2);
-//	PWM_Out2 = [((Kp)*error2)+((Ki)*integral2) + ((Kd)*diff2)];
-//	last_error2 = error2;
-rightBackDuty = PWM_Out2;
-}
-void BackLeftErrorControl(){  //Timer 1
-uint32_t error1;
-uint32_t integral1;
-uint32_t diff1;
-uint32_t last_error1;
-unsigned char PWM_Out1;
-
-//	error1 = ? - uwTIM1Freq;
-//	integral1 = integral1 + error1;
-//	if (integral1> ?)
-//		integral1 = ?;
-//	diff1 = (error1 - last_error1);
-//	PWM_Out1 = [((Kp)*error1)+((Ki)*integral1) + ((Kd)*diff1)];
-//	last_error1 = error1;
-leftBackDuty=PWM_Out1;
-}
 
 void left_Alignment(){
 uint32_t freq1, freq2;
@@ -338,26 +266,6 @@ void right_Alignment(){}
 void front_Alignment(){}
 void back_Alignment(){}
 
-void test(int CMD){
-//  if(Frequency5>3300)
-//	{freq5 = 3300;}
-//	else {freq5 = Frequency5;}
-//	
-//	error5 = CMD - freq5; //-1050
-//	integral5 = integral5 + error5;//-1050
-//	if (integral5> 3300)
-//	{integral5 = 3300;}
-//		if (integral5<0)
-//	{integral5 = 0;}
-//	diff5 = (error5 - last_error5);//-1050
-//	PWM_Out5 = (((0.5)*error5)+((0.005)*integral5) + ((0)*diff5));
-//	if (PWM_Out5>100)
-//		{PWM_Out5=100;}
-//	if (PWM_Out5<0)
-//		{PWM_Out5=0;}
-//	last_error5 = error5;
-//SetLeftFrontWheelPwm(PWM_Out5);
-}
 	void TIM7_Config(){
 NVIC_InitTypeDef NVIC_InitStructure;
 /* Enable the TIM8 gloabal Interrupt */
@@ -380,11 +288,11 @@ TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
 /* TIM2 enable counter */
 TIM_Cmd(TIM7, ENABLE); 
 	}
+	
 int main(void){
 		mainInit();
 	  DriveInit();
-	  leftFrontDuty=50;
-	SetLeftFrontWheelPwm(leftFrontDuty);
+	SetLeftFrontWheelPwm(50);
 	
 
 //try a couple test functions 
@@ -436,11 +344,7 @@ TIM_Config();
 	 TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);	
    TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
    TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	 
-  while (1){
-  	//FrontLeftErrorControl();
-		//test(2200);
-	//	Delay(10);
-	}
+  while (1){}
 }
 
 void TIM_Config(void){

@@ -1,79 +1,57 @@
-/**
-  ******************************************************************************
-  * @file    TIM/TIM_PWMInput/stm32f4xx_it.c 
-  * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    13-November-2013
-  * @brief   Main Interrupt Service Routines.
-  *          This file provides template for all exceptions handler and peripherals
-  *          interrupt service routine.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
-  */
-
-/* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 
-/** @addtogroup STM32F4xx_StdPeriph_Examples
-  * @{
-  */
-
-/** @addtogroup TIM_PWMInput
-  * @{
-  */ 
-
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
+/********Front Right Motor**********/
 __IO uint16_t IC4Value = 0;
 __IO uint16_t DutyCycle4 = 0;
 __IO uint32_t Frequency4 = 0;
+int error4, integral4,diff4, last_error4, feedback4 = 0;
+double Kp4 = 0.01;
+double Ki4 = 0.05;
+double Kd4 = 0.1;
+unsigned char PWM_Out4;
+uint32_t freq4;
 
+/********Back Right Motor**********/
 __IO uint16_t IC2Value = 0;
 __IO uint16_t DutyCycle2 = 0;
 __IO uint32_t Frequency2 = 0;
+int error2, integral2,diff2, last_error2, feedback2 = 0;
+double Kp2 = 0.01;
+double Ki2 = 0.05;
+double Kd2 = 0.1;
+unsigned char PWM_Out2;
+uint32_t freq2;
 
+/********Front Left Motor**********/
 __IO uint16_t IC5Value = 0;
 __IO uint16_t DutyCycle5 = 0;
 __IO uint32_t Frequency5 = 0;
+int error5, integral5,diff5, last_error5, feedback5 = 0;
+double Kp5 = 0.01;
+double Ki5 = 0.05;
+double Kd5 = 0.1;
+unsigned char PWM_Out5;
+uint32_t freq5;
 
+/********Back Left Motor**********/
 __IO uint16_t uhIC3ReadValue1 = 0;
 __IO uint16_t uhIC3ReadValue2 = 0;
 __IO uint16_t uhCaptureNumber = 0;
 __IO uint32_t uwCapture = 0;
 __IO uint32_t uwTIM1Freq = 0;
+int error1, integral1,diff1, last_error1, feedback1 = 0;
+double Kp1 = 0.01;
+double Ki1 = 0.05;
+double Kd1 = 0.1;
+unsigned char PWM_Out1;
+uint32_t freq1;
 
-
-int error5 = 0;
-int integral5 = 0;
-int diff5 = 0;
-int last_error5 = 0;
-	int Kp = 1;
-	double Ki = 0.1;
-	double Kd = 0.1;
-unsigned char PWM_Out5;
-int feedback = 0;
-uint32_t freq5;
-int CMD = 3300;
+int CMD = 1650;
 
 extern void SetLeftFrontWheelPwm(int);
+extern void SetLeftBackWheelPwm(int);
+extern void SetRightFrontWheelPwm(int);
+extern void SetRightBackWheelPwm(int);
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 void TimingDelay_Decrement(void);
@@ -311,16 +289,17 @@ void TIM7_IRQHandler(void)
 	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET)
 {
 TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
+/*************Front Left Motor Control***************/
   if(Frequency5>3300)
-	{freq5 = 3300;}
-	else {freq5 = Frequency5;}
-	
+		{freq5 = 3300;}
+	else 
+		{freq5 = Frequency5;}
 	error5 = CMD - freq5; //-1050
 	integral5 = integral5 + error5;//-1050
 	if (integral5> 3300)
-	{integral5 = 3300;}
-		if (integral5<0)
-	{integral5 = 0;}
+		{integral5 = 3300;}
+	if (integral5<0)
+		{integral5 = 0;}
 	diff5 = (error5 - last_error5);//-1050
 	PWM_Out5 = (((0.05)*error5)+((0.01)*integral5) + ((0)*diff5));
 	if (PWM_Out5>100)
@@ -328,7 +307,67 @@ TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 	if (PWM_Out5<0)
 		{PWM_Out5=0;}
 	last_error5 = error5;
-SetLeftFrontWheelPwm(PWM_Out5);
+SetLeftBackWheelPwm(PWM_Out5);
+		
+/*************Back Left Motor Control***************/
+  if(uwTIM1Freq>3300)
+		{freq1 = 3300;}
+	else 
+		{freq1 = uwTIM1Freq;}
+	error1 = CMD - freq1; //-1050
+	integral1 = integral1 + error1;//-1050
+	if (integral1> 3300)
+		{integral1 = 3300;}
+	if (integral1<0)
+		{integral1 = 0;}
+	diff1 = (error1 - last_error1);//-1050
+	PWM_Out1 = (((0.05)*error1)+((0.01)*integral1) + ((0)*diff1));
+	if (PWM_Out1>100)
+		{PWM_Out1=100;}
+	if (PWM_Out1<0)
+		{PWM_Out1=0;}
+	last_error1 = error1;
+SetLeftFrontWheelPwm(PWM_Out1);
+		
+		/*************Front Right Motor Control***************/
+  if(Frequency4>3300)
+		{freq4 = 3300;}
+	else 
+		{freq4 = Frequency4;}
+	error4 = CMD - freq4; //-1050
+	integral4 = integral4 + error4;//-1050
+	if (integral4> 3300)
+		{integral4 = 3300;}
+	if (integral4<0)
+		{integral4 = 0;}
+	diff4 = (error4 - last_error4);//-1050
+	PWM_Out4 = (((0.05)*error4)+((0.01)*integral4) + ((0)*diff4));
+	if (PWM_Out4>100)
+		{PWM_Out4=100;}
+	if (PWM_Out4<0)
+		{PWM_Out4=0;}
+	last_error4 = error4;
+SetRightFrontWheelPwm(PWM_Out4);
+		
+		/*************Back Right Motor Control***************/
+  if(Frequency2>3300)
+		{freq2 = 3300;}
+	else 
+		{freq2 = Frequency2;}
+	error2 = CMD - freq2; //-1050
+	integral2 = integral2 + error2;//-1050
+	if (integral2> 3300)
+		{integral2 = 3300;}
+	if (integral2<0)
+		{integral2 = 0;}
+	diff2 = (error2 - last_error2);//-1050
+	PWM_Out2 = (((0.05)*error2)+((0.01)*integral2) + ((0)*diff2));
+	if (PWM_Out2>100)
+		{PWM_Out2=100;}
+	if (PWM_Out2<0)
+		{PWM_Out2=0;}
+	last_error2 = error2;
+SetRightBackWheelPwm(PWM_Out2);
 	}
 }
 
