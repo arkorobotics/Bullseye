@@ -284,6 +284,16 @@ void TIM5_IRQHandler(void)
   }
 }
 
+void TIM8_CC_IRQHandler(void){
+/*************Front Motor Control***************/
+	
+/*************Back Motor Control***************/
+	
+/*************Left Motor Control***************/
+	
+/*************Right Motor Control***************/
+}
+
 void TIM7_IRQHandler(void)
 { 
 	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET)

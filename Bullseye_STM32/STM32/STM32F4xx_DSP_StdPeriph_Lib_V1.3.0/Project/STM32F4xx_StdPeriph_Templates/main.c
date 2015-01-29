@@ -289,10 +289,35 @@ TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
 TIM_Cmd(TIM7, ENABLE); 
 	}
 	
+		void TIM8_Config(){
+NVIC_InitTypeDef NVIC_InitStructure;
+/* Enable the TIM8 gloabal Interrupt */
+NVIC_InitStructure.NVIC_IRQChannel = TIM8_CC_IRQn;
+NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+NVIC_Init(&NVIC_InitStructure);
+ 
+/* TIM2 clock enable */
+RCC_APB1PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
+/* Time base configuration */
+TIM_TimeBaseStructure.TIM_Period = 10000 - 1; // 1 MHz down to 1 KHz (1 ms)
+TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
+TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
+/* TIM IT enable */
+TIM_ITConfig(TIM8, TIM_IT_Update, ENABLE);
+/* TIM2 enable counter */
+TIM_Cmd(TIM8, ENABLE); 
+	}
+	
 int main(void){
 		mainInit();
 	  DriveInit();
-	SetLeftFrontWheelPwm(50);
+	Forward_Straight(50);
+	//Backward_Straight(50);
+	//SetRightBackWheelPwm(50);
 	
 
 //try a couple test functions 
