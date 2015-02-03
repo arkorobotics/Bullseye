@@ -289,13 +289,6 @@ void TIM8_CC_IRQHandler(void){
 	if (TIM_GetITStatus(TIM8, TIM_IT_Update) != RESET)
 {
 TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
-/*************Front Motor Control***************/
-	
-/*************Back Motor Control***************/
-	
-/*************Left Motor Control***************/
-	
-/*************Right Motor Control***************/
 	}
 }
 

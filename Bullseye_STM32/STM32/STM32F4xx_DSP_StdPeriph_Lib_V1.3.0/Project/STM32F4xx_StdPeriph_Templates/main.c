@@ -6,6 +6,16 @@ static unsigned char duty = 0;
 static unsigned char currDuty = 0;
 uint16_t PrescalerValue = 0;
 static __IO uint32_t uwTimingDelay;
+int fronterror, frontintegral,frontdiff, frontlast_error = 0;
+unsigned char frontPWM_Out;
+int backerror, backintegral,backdiff, backlast_error = 0;
+unsigned char backPWM_Out1;
+int lefterror, lastintegral,leftdiff, leftlast_error = 0;
+unsigned char leftPWM_Out;
+int righterror, rightintegral,rightdiff, rightlast_error = 0;
+unsigned char rightPWM_Out;
+int count, heart = 0;
+
 
 void init(void);
 void PreScale_TIME_Init(void);
@@ -29,6 +39,8 @@ extern uint32_t uwTIM1Freq;
 #define Clear_IN2				GPIOE->BSRRH = (1<<4)
 #define Set_IN1					GPIOE->BSRRL = (1<<2)
 #define Clear_IN1				GPIOE->BSRRH = (1<<2)
+#define SetBit					GPIOD->BSRRL = (1<<15)
+#define ClearBit				GPIOD->BSRRH = (1<<15)
 
 void mainInit(){
 TMR3_PWM_Init();
@@ -301,7 +313,7 @@ NVIC_Init(&NVIC_InitStructure);
 /* TIM2 clock enable */
 RCC_APB1PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
 /* Time base configuration */
-TIM_TimeBaseStructure.TIM_Period = SystemCoreClock/100; // 1 MHz down to 1 KHz (1 ms)
+TIM_TimeBaseStructure.TIM_Period = SystemCoreClock/10000; // 1 MHz down to 1 KHz (1 ms)
 TIM_TimeBaseStructure.TIM_Prescaler = 0; // 24 MHz Clock down to 1 MHz (adjust per your clock)
 TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
@@ -311,13 +323,25 @@ TIM_ITConfig(TIM8, TIM_IT_Update, ENABLE);
 /* TIM2 enable counter */
 TIM_Cmd(TIM8, ENABLE); 
 	}
-	
+void D_init(void){
+			GPIO_InitTypeDef GPIO_InitStructure; 
+			RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE); 
+			RCC_AHB1PeriphClockCmd(RCC_AHB1ENR_GPIODEN,ENABLE); 
+			
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 
+			GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+			GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+			GPIO_Init(GPIOD, &GPIO_InitStructure);
+}
 int main(void){
 		mainInit();
 	  DriveInit();
+	D_init();
 	Forward_Straight(50);
 	//Backward_Straight(50);
-	//SetRightBackWheelPwm(50);
+	//SetRightFrontWheelPwm(50);
 	
 
 //try a couple test functions 
@@ -325,6 +349,7 @@ int main(void){
 //	Forward_Straight(duty);
 //	Backward_Straight(duty);
 TIM7_Config();
+//TIM8_Config();
 TIM_Config();	
   
   TIM_ICInitStructure.TIM_Channel = TIM_Channel_2;
@@ -369,7 +394,15 @@ TIM_Config();
 	 TIM_ITConfig(TIM2, TIM_IT_CC2, ENABLE);	
    TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
    TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	 
-  while (1){}
+  while (1){
+		if(count==1000000){
+			heart=~heart;
+	if(heart==-1) SetBit;
+	else ClearBit;
+		count=0;}
+		else {count=count+1;}
+	
+	}
 }
 
 void TIM_Config(void){
