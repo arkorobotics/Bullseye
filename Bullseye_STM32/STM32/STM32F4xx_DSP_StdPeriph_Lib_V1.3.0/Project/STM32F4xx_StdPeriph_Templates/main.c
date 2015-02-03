@@ -278,8 +278,8 @@ NVIC_Init(&NVIC_InitStructure);
 /* TIM2 clock enable */
 RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
 /* Time base configuration */
-TIM_TimeBaseStructure.TIM_Period = 10000 - 1; // 1 MHz down to 1 KHz (1 ms)
-TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
+TIM_TimeBaseStructure.TIM_Period = SystemCoreClock/1000; // 1 MHz down to 1 KHz (1 ms)
+TIM_TimeBaseStructure.TIM_Prescaler = 0; // 24 MHz Clock down to 1 MHz (adjust per your clock)
 TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 TIM_TimeBaseInit(TIM7, &TIM_TimeBaseStructure);
@@ -301,8 +301,8 @@ NVIC_Init(&NVIC_InitStructure);
 /* TIM2 clock enable */
 RCC_APB1PeriphClockCmd(RCC_APB2Periph_TIM8, ENABLE);
 /* Time base configuration */
-TIM_TimeBaseStructure.TIM_Period = 10000 - 1; // 1 MHz down to 1 KHz (1 ms)
-TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
+TIM_TimeBaseStructure.TIM_Period = SystemCoreClock/100; // 1 MHz down to 1 KHz (1 ms)
+TIM_TimeBaseStructure.TIM_Prescaler = 0; // 24 MHz Clock down to 1 MHz (adjust per your clock)
 TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 TIM_TimeBaseInit(TIM8, &TIM_TimeBaseStructure);
