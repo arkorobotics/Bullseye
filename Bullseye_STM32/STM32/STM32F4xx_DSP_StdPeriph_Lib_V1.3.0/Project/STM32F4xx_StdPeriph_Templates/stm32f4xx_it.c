@@ -284,13 +284,6 @@ void TIM5_IRQHandler(void)
   }
 }
 
-void TIM8_CC_IRQHandler(void){
-
-	if (TIM_GetITStatus(TIM8, TIM_IT_Update) != RESET)
-{
-TIM_ClearITPendingBit(TIM8, TIM_IT_Update);
-	}
-}
 
 void TIM7_IRQHandler(void)
 { 
@@ -315,7 +308,7 @@ TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 	if (PWM_Out5<0)
 		{PWM_Out5=0;}
 	last_error5 = error5;
-SetLeftBackWheelPwm(PWM_Out5);
+SetLeftFrontWheelPwm(PWM_Out5);
 		
 /*************Back Left Motor Control***************/
   if(uwTIM1Freq>3300)
@@ -335,7 +328,7 @@ SetLeftBackWheelPwm(PWM_Out5);
 	if (PWM_Out1<0)
 		{PWM_Out1=0;}
 	last_error1 = error1;
-SetLeftFrontWheelPwm(PWM_Out1);
+SetLeftBackWheelPwm(PWM_Out1);
 		
 		/*************Front Right Motor Control***************/
   if(Frequency4>3300)
