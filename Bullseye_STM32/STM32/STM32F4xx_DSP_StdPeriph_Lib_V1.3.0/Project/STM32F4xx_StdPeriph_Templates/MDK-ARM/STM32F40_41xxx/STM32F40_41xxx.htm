@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\STM32F40_41xxx\STM32F40_41xxx.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\STM32F40_41xxx\STM32F40_41xxx.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Thu Feb 05 08:35:05 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Fri Feb 06 11:17:50 2015
 <BR><P>
 <H3>Maximum Stack Usage =        144 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -539,8 +539,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[74]"></a>Forward_Straight</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.Forward_Straight))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = Forward_Straight &rArr; SetRightFrontWheelPwm &rArr; TIM_OC1Init
+<P><STRONG><a name="[74]"></a>Forward_Straight</STRONG> (Thumb, 34 bytes, Stack size 4 bytes, main.o(i.Forward_Straight))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Forward_Straight
 </UL>
 <BR>[Calls]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRightFrontWheelPwm
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRightBackWheelPwm
@@ -637,39 +637,23 @@ Global Symbols
 <P><STRONG><a name="[6]"></a>SVC_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f4xx_it.o(i.SVC_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f40_41xxx.o(RESET)
 </UL>
-<P><STRONG><a name="[79]"></a>SetLeftBackWheelPwm</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.SetLeftBackWheelPwm))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SetLeftBackWheelPwm &rArr; TIM_OC4Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC4Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
+<P><STRONG><a name="[79]"></a>SetLeftBackWheelPwm</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, main.o(i.SetLeftBackWheelPwm))
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Forward_Straight
 </UL>
 
-<P><STRONG><a name="[78]"></a>SetLeftFrontWheelPwm</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.SetLeftFrontWheelPwm))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SetLeftFrontWheelPwm &rArr; TIM_OC3Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC3Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
+<P><STRONG><a name="[78]"></a>SetLeftFrontWheelPwm</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, main.o(i.SetLeftFrontWheelPwm))
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Forward_Straight
 </UL>
 
-<P><STRONG><a name="[77]"></a>SetRightBackWheelPwm</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.SetRightBackWheelPwm))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SetRightBackWheelPwm &rArr; TIM_OC2Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC2Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
+<P><STRONG><a name="[77]"></a>SetRightBackWheelPwm</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, main.o(i.SetRightBackWheelPwm))
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Forward_Straight
 </UL>
 
-<P><STRONG><a name="[76]"></a>SetRightFrontWheelPwm</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.SetRightFrontWheelPwm))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SetRightFrontWheelPwm &rArr; TIM_OC1Init
-</UL>
-<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_OC1Init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
+<P><STRONG><a name="[76]"></a>SetRightFrontWheelPwm</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, main.o(i.SetRightFrontWheelPwm))
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM7_IRQHandler
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Forward_Straight
 </UL>
 
@@ -761,7 +745,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[41]"></a>TIM7_IRQHandler</STRONG> (Thumb, 1132 bytes, Stack size 56 bytes, stm32f4xx_it.o(i.TIM7_IRQHandler))
+<P><STRONG><a name="[41]"></a>TIM7_IRQHandler</STRONG> (Thumb, 1156 bytes, Stack size 56 bytes, stm32f4xx_it.o(i.TIM7_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = TIM7_IRQHandler &rArr; __aeabi_dadd &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_GetITStatus
@@ -854,7 +838,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC1Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_PWM_Init
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRightFrontWheelPwm
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PreScale_TIME_Init
 </UL>
 
@@ -867,7 +850,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC2Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_PWM_Init
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRightBackWheelPwm
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PreScale_TIME_Init
 </UL>
 
@@ -880,7 +862,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC3Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_PWM_Init
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetLeftFrontWheelPwm
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PreScale_TIME_Init
 </UL>
 
@@ -893,7 +874,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TIM_OC4Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_PWM_Init
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetLeftBackWheelPwm
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PreScale_TIME_Init
 </UL>
 

@@ -8,20 +8,34 @@ Project File Date:  02/05/2015
 
 <h2>Output:</h2>
 Build target 'STM32F40_41xxx'
-compiling main.c...
-..\main.c(5): warning:  #177-D: variable "duty" was declared but never referenced
-  static unsigned char duty = 0;
-..\main.c(6): warning:  #177-D: variable "currDuty" was declared but never referenced
-  static unsigned char currDuty = 0;
-..\main.c(442): warning:  #177-D: function "Delay" was declared but never referenced
-  void Delay(__IO uint32_t nTime){ 
-..\main.c: 3 warnings, 0 errors
+compiling stm32f4xx_it.c...
+..\stm32f4xx_it.c(308): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out5<0)
+..\stm32f4xx_it.c(328): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out1<0)
+..\stm32f4xx_it.c(348): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out4<0)
+..\stm32f4xx_it.c(368): warning:  #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out2<0)
+..\stm32f4xx_it.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=7656 RO-data=424 RW-data=404 ZI-data=1084  
-".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 3 Warning(s).
+Program Size: Code=7632 RO-data=424 RW-data=404 ZI-data=1084  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 4 Warning(s).
 Load "C:\\Users\\Sabrina\\ECE_Folders\\404_GitHub\\Bullseye\\Bullseye_STM32\\STM32\\STM32F4xx_DSP_StdPeriph_Lib_V1.3.0\\Project\\STM32F4xx_StdPeriph_Templates\\MDK-ARM\\STM32F40_41xxx\\STM32F40_41xxx.axf" 
 Erase Done.
 Programming Done.
 Verify OK.
-t created
-M32\STM32F4xx_DSP_StdPeriph_Lib_V1.3.0\Project\STM32F4xx_StdPeriph_Templates\MDK-ARM\STM32F40_41xxx\STM32F40_41xxx.axf'
+</pre>
+</body>
+</html>
+inking...
+Program Size: Code=7628 RO-data=424 RW-data=404 ZI-data=1084  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 7 Warning(s).
+Load "C:\\Users\\Sabrina\\ECE_Folders\\404_GitHub\\Bullseye\\Bullseye_STM32\\STM32\\STM32F4xx_DSP_StdPeriph_Lib_V1.3.0\\Project\\STM32F4xx_StdPeriph_Templates\\MDK-ARM\\STM32F40_41xxx\\STM32F40_41xxx.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+ #186-D: pointless comparison of unsigned integer with zero
+        if (PWM_Out2<0)
+..\stm32f4xx_it.c: 4 warnings, 0 errors
+"..\stm32f4xx_it.c" - 0 Error(s), 4 Warning(s).

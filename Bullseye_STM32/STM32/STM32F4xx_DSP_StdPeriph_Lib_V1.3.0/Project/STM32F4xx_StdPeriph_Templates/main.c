@@ -3,18 +3,13 @@
 #include <math.h>
 
 static unsigned char duty = 0;
+static unsigned char rightFrontDuty = 0;
+static unsigned char rightBackDuty = 0;
+static unsigned char leftFrontDuty = 0;
+static unsigned char leftBackDuty = 0;
 static unsigned char currDuty = 0;
 uint16_t PrescalerValue = 0;
 static __IO uint32_t uwTimingDelay;
-int fronterror, frontintegral,frontdiff, frontlast_error = 0;
-unsigned char frontPWM_Out;
-int backerror, backintegral,backdiff, backlast_error = 0;
-unsigned char backPWM_Out1;
-int lefterror, lastintegral,leftdiff, leftlast_error = 0;
-unsigned char leftPWM_Out;
-int righterror, rightintegral,rightdiff, rightlast_error = 0;
-unsigned char rightPWM_Out;
-int count, heart = 0;
 
 void init(void);
 void PreScale_TIME_Init(void);
@@ -38,8 +33,6 @@ extern uint32_t uwTIM1Freq;
 #define Clear_IN2				GPIOE->BSRRH = (1<<4)
 #define Set_IN1					GPIOE->BSRRL = (1<<2)
 #define Clear_IN1				GPIOE->BSRRH = (1<<2)
-#define SetBit					GPIOD->BSRRL = (1<<15)
-#define ClearBit				GPIOD->BSRRH = (1<<15)
 
 void mainInit(){
 TMR3_PWM_Init();
@@ -137,23 +130,19 @@ void TIM3_Config(void){
 }
 
 void SetRightFrontWheelPwm(unsigned char PwmDutyCycle){
-	TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
-	TIM_OC1Init(TIM3, &TIM_OCInitStructure);																
+	TIM3->CCR1 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;	
 	}
 	
 void SetRightBackWheelPwm(unsigned char PwmDutyCycle){
-  TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
-	TIM_OC2Init(TIM3, &TIM_OCInitStructure);
+		TIM3->CCR2 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	}
 	
 void SetLeftFrontWheelPwm(unsigned char PwmDutyCycle){
-  TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
-	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
+	TIM3->CCR3 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	}
 	
 void SetLeftBackWheelPwm(unsigned char PwmDutyCycle){
-  TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
-	TIM_OC4Init(TIM3, &TIM_OCInitStructure);
+		TIM3->CCR4 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 	}
 void PreScale_TIME_Init(void){
 		/* Compute the prescaler value */
@@ -223,57 +212,6 @@ void Move_Backward(){//Counter Clockwise Control
 	Set_IN2;
 }
 
-void Forward_Straight(unsigned char forwardDuty){
-Move_Forward(); 
-  SetRightFrontWheelPwm(forwardDuty);
-	SetRightBackWheelPwm(forwardDuty);
-	SetLeftFrontWheelPwm(forwardDuty);
-	SetLeftBackWheelPwm(forwardDuty);
-}
-void Backward_Straight(unsigned char backwardDuty){
-Move_Backward(); 
-  SetRightFrontWheelPwm(backwardDuty);
-	SetRightBackWheelPwm(backwardDuty);
-	SetLeftFrontWheelPwm(backwardDuty);
-	SetLeftBackWheelPwm(backwardDuty);
-}
-	
-
-//void left_Alignment(){
-//}
-//void right_Alignment(){}
-//void front_Alignment(){
-//	int tempFreq1, tempFreq2,left;
-//	if(Frequency4>Frequency5){
-//		 tempFreq1 = Frequency4;
-//		 tempFreq2 = Frequency5;
-//		left = 1;
-//	}
-//	else {
-//		tempFreq1 = Frequency5;
-//		tempFreq2 = Frequency4;
-//		left=0;
-//	}
-//  fronterror=tempFreq1-tempFreq2;
-//	if((fronterror>-100) && (fronterror<100)){
-//	frontintegral = frontintegral + fronterror;//-1050
-//	if (frontintegral> 3300)
-//		{frontintegral = 3300;}
-//	if (frontintegral<0)
-//		{frontintegral = 0;}
-//	frontdiff = (fronterror - frontlast_error);//-1050
-//	frontPWM_Out = (((0.05)*fronterror)+((0.01)*frontintegral) + ((0)*frontdiff));
-//	if (frontPWM_Out>100)
-//		{frontPWM_Out=100;}
-//	if (frontPWM_Out<0)
-//		{frontPWM_Out=0;}
-//	frontlast_error = fronterror;
-//		if(left==1){
-//SetLeftFrontWheelPwm(frontPWM_Out);}
-//		else{SetRightFrontWheelPwm(frontPWM_Out);}}
-//}
-//void back_Alignment(){}
-
 	void TIM7_Config(){
 NVIC_InitTypeDef NVIC_InitStructure;
 /* Enable the TIM8 gloabal Interrupt */
@@ -296,24 +234,11 @@ TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
 /* TIM2 enable counter */
 TIM_Cmd(TIM7, ENABLE); 
 	}
-	void D_init(void){
-			GPIO_InitTypeDef GPIO_InitStructure; 
-			RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE); 
-			RCC_AHB1PeriphClockCmd(RCC_AHB1ENR_GPIODEN,ENABLE); 
-			
-			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 
-			GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-			GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-			GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-			GPIO_Init(GPIOD, &GPIO_InitStructure);
-}
 int main(void){
 		mainInit();
-		D_init();
 	  DriveInit();
-	Forward_Straight(50);
-	//SetLeftBackWheelPwm(50);
+	Move_Forward();
+
 TIM7_Config();
 TIM_Config();	
   
@@ -360,13 +285,6 @@ TIM_Config();
    TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
    TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	 
   while (1){
-		if(count==1000000){
-			heart=~heart;
-	if(heart==-1) SetBit;
-	else ClearBit;
-		count=0;}
-		else {count=count+1;}
-	
 	}
 }
 
