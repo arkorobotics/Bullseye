@@ -92,7 +92,11 @@ int last_error4 = 0;
 unsigned char PWM_Out4;
 uint32_t freq4;
 
-int CMD = 3300;
+int pid_out1 = 0;
+int pid_out2 = 0;
+int pid_out5 = 0;
+int pid_out4 = 0;
+int CMD = 1500;
 
 extern void SetLeftFrontWheelPwm(int);
 extern void SetLeftBackWheelPwm(int);
@@ -335,85 +339,89 @@ void TIM7_IRQHandler(void)
 	if (TIM_GetITStatus(TIM7, TIM_IT_Update) != RESET)
 {
 TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
-  if(Frequency5>3300)
-	{freq5 = 3300;}
+  if(Frequency5>4000)
+	{freq5 = 4000;}
 	else {freq5 = Frequency5;}
 	
 	error5 = CMD - freq5; //-1050
 	integral5 = integral5 + error5;//-1050
-	if (integral5> 3300)
-	{integral5 = 3300;}
+	if (integral5> 4000)
+	{integral5 = 4000;}
 		if (integral5<0)
 	{integral5 = 0;}
 	diff5 = (error5 - last_error5);//-1050
-	PWM_Out5 = (((0.05)*error5)+((0.01)*integral5) + ((0)*diff5));
-	if (PWM_Out5>100)
+	pid_out5 = (((0.08)*error5)+((0.025)*integral5) + ((0.001)*diff5));
+	if (pid_out5>100)
 		{PWM_Out5=100;}
-	if (PWM_Out5<0)
+	else if (pid_out5<0)
 		{PWM_Out5=0;}
+		else {PWM_Out5=(unsigned char)pid_out5;}
 	last_error5 = error5;
 SetLeftFrontWheelPwm(PWM_Out5);
 		
 /////////////////////////////////////////////////////////////////////////////
 		
-  if(uwTIM1Freq>3300)
-	{freq1 = 3300;}
+  if(uwTIM1Freq>4000)
+	{freq1 = 4000;}
 	else {freq1 = uwTIM1Freq;}
 	
 	error1 = CMD - freq1; //-1050
 	integral1 = integral1 + error1;//-1050
-	if (integral1> 3300)
-	{integral1 = 3300;}
+	if (integral1> 4000)
+	{integral1 = 4000;}
 		if (integral1<0)
 	{integral1 = 0;}
 	diff1 = (error1 - last_error1);//-1050
-	PWM_Out1 = (((0.05)*error1)+((0.01)*integral1) + ((0)*diff1));
-	if (PWM_Out1>100)
+	pid_out1 = (((0.08)*error1)+((0.025)*integral1) + ((0.001)*diff1));
+	if (pid_out1>100)
 		{PWM_Out1=100;}
-	if (PWM_Out1<0)
+	else if (pid_out1<0)
 		{PWM_Out1=0;}
+		else {PWM_Out1 = (unsigned char)pid_out1;}
 	last_error1 = error1;
 SetLeftBackWheelPwm(PWM_Out1);
 		
 /////////////////////////////////////////////////////////////////////////////
 		
-  if(Frequency2>3300)
-	{freq2 = 3300;}
+  if(Frequency2>4000)
+	{freq2 = 4000;}
 	else {freq2 = Frequency2;}
 	
 	error2 = CMD - freq2; //-1050
 	integral2 = integral2 + error2;//-1050
-	if (integral2> 3300)
-	{integral2 = 3300;}
+	if (integral2> 4000)
+	{integral2 = 4000;}
 		if (integral2<0)
 	{integral2 = 0;}
 	diff2 = (error2 - last_error2);//-1050
-	PWM_Out2 = (((0.05)*error2)+((0.01)*integral2) + ((0)*diff2));
-	if (PWM_Out2>100)
+	pid_out2 = (((0.08)*error2)+((0.025)*integral2) + ((0.001)*diff2));
+	if (pid_out2>100)
 		{PWM_Out2=100;}
-	if (PWM_Out2<0)
+	else if (pid_out2<0)
 		{PWM_Out2=0;}
+		else {PWM_Out2 = (unsigned char)pid_out2;}
 	last_error2 = error2;
 SetRightBackWheelPwm(PWM_Out2);
 		
 /////////////////////////////////////////////////////////////////////////////
 		
-  if(Frequency4>3300)
-	{freq4 = 3300;}
+  if(Frequency4>4000)
+	{freq4 = 4000;}
 	else {freq4 = Frequency4;}
 	
 	error4 = CMD - freq4; //-1050
 	integral4 = integral4 + error4;//-1050
-	if (integral4> 3300)
-	{integral4 = 3300;}
+	if (integral4> 4000)
+	{integral4 = 4000;}
 		if (integral4<0)
 	{integral4 = 0;}
 	diff4 = (error4 - last_error4);//-1050
-	PWM_Out4 = (((0.05)*error4)+((0.01)*integral4) + ((0)*diff4));
-	if (PWM_Out4>100)
+	pid_out4 = (((0.08)*error4)+((0.025)*integral4) + ((0.001)*diff4));
+	if (pid_out4>100)
 		{PWM_Out4=100;}
-	if (PWM_Out4<0)
+	else if (pid_out4<0)
 		{PWM_Out4=0;}
+		else {PWM_Out4 = (unsigned char)pid_out4;}
 	last_error4 = error4;
 SetRightFrontWheelPwm(PWM_Out4);
 	}
