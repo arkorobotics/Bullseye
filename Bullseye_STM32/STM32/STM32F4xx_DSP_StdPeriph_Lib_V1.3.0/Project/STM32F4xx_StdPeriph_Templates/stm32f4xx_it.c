@@ -96,7 +96,7 @@ int pid_out1 = 0;
 int pid_out2 = 0;
 int pid_out5 = 0;
 int pid_out4 = 0;
-int CMD = 1500;
+int CMD = 2000;
 
 extern void SetLeftFrontWheelPwm(int);
 extern void SetLeftBackWheelPwm(int);

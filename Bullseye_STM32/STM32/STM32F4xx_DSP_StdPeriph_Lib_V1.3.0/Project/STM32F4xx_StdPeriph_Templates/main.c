@@ -132,19 +132,19 @@ void TIM3_Config(void){
 void SetRightFrontWheelPwm(unsigned char PwmDutyCycle){
 //	TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 //	TIM_OC1Init(TIM3, &TIM_OCInitStructure);	
-	TIM3->CCR1 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;	
+	TIM3->CCR1 = PwmDutyCycle * 4450/100;	
 	}
 	
 void SetRightBackWheelPwm(unsigned char PwmDutyCycle){
 //  TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 //	TIM_OC2Init(TIM3, &TIM_OCInitStructure);
-		TIM3->CCR2 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
+		TIM3->CCR2 = PwmDutyCycle * 4450/100;
 	}
 	
 void SetLeftFrontWheelPwm(unsigned char PwmDutyCycle){
 //  TIM_OCInitStructure.TIM_Pulse = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
 //	TIM_OC3Init(TIM3, &TIM_OCInitStructure);
-	TIM3->CCR3 = PwmDutyCycle * TIM_TimeBaseStructure.TIM_Period/100;
+	TIM3->CCR3 = PwmDutyCycle * 4450/100;
 	}
 	
 void SetLeftBackWheelPwm(unsigned char PwmDutyCycle){
