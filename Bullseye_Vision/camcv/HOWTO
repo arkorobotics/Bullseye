@@ -1,0 +1,4 @@
+cd /home/pi/camcv
+./camcv faces.csv histo threshold
+
+./camcv faces.csv 1 5500
