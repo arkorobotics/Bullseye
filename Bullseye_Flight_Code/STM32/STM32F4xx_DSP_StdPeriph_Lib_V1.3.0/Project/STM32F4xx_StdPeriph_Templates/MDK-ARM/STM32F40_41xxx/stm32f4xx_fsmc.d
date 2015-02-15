@@ -1,11 +1,11 @@
 .\stm32f40_41xxx\stm32f4xx_fsmc.o: ..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.c
 .\stm32f40_41xxx\stm32f4xx_fsmc.o: ..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h
 .\stm32f40_41xxx\stm32f4xx_fsmc.o: ..\..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
-.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4.h
-.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
-.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cmInstr.h
-.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cmFunc.h
-.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS\3.20.4\CMSIS\Include\core_cm4_simd.h
+.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm4.h
+.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\stm32f40_41xxx\stm32f4xx_fsmc.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm4_simd.h
 .\stm32f40_41xxx\stm32f4xx_fsmc.o: ..\..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h
 .\stm32f40_41xxx\stm32f4xx_fsmc.o: ..\stm32f4xx_conf.h
 .\stm32f40_41xxx\stm32f4xx_fsmc.o: ..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_adc.h
