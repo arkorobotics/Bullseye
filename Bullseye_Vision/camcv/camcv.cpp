@@ -20,6 +20,10 @@
 #include <string.h>
 #include <memory.h>
 
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
+
 //new
 #include <cv.h>
 #include <highgui.h>
@@ -658,10 +662,10 @@ int main(int argc, const char **argv)
 	// with my daughters
 	// and they prefer to swimm than to see their father do a config file
 	// life is hard.
-	people[P_PIERRE] 	= "arko";
-	people[P_NATACHA] 	= "Natacha";
-	people[P_MONA] 		= "Mona Lisa";
-	people[P_LISA]		= "Lisa";
+	people[P_PIERRE] 	= "Cinder Block";
+	people[P_NATACHA] 	= "Robot";
+	people[P_MONA] 		= "Mr Roboto";
+	people[P_LISA]		= "Object";
 	
 	// init...
 	// reset counter
@@ -676,7 +680,8 @@ int main(int argc, const char **argv)
 	fn_csv = string(argv[1]);
 	
 	// Note : /!\ change with your opencv path	
-	fn_haar = "/usr/share/opencv/haarcascades/haarcascade_frontalface_alt.xml";
+	//fn_haar = "/usr/share/opencv/haarcascades/haarcascade_frontalface_alt.xml";
+	fn_haar = "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/cinder_cascade_1.xml";
 	// change fn_harr to be quicker LBP (see article)
 	//fn_haar = "/usr/share/opencv/haarcascades/lbpcascade_frontalface.xml";
 	DEBUG cout<<"(OK) csv="<<fn_csv<<"\n";

@@ -3,11 +3,11 @@
 
 # compile C with /usr/bin/gcc
 # compile CXX with /usr/bin/c++
-C_FLAGS = -I/usr/local/include/opencv -I/usr/local/include -I/opt/vc/userland-master/host_applications/linux/libs/bcm_host/include -I/opt/vc/userland-master/host_applications/linux/apps/raspicam/gl_scenes -I/opt/vc/userland-master/interface/vcos -I/opt/vc/userland-master -I/opt/vc/userland-master/interface/vcos/pthreads -I/opt/vc/userland-master/interface/vmcs_host/linux -I/opt/vc/userland-master/interface/khronos/include -I/opt/vc/userland-master/interface/khronos/common -I/home/pi/camcv/./gl_scenes -I/home/pi/camcv/.   
+C_FLAGS = -I/usr/local/include/opencv -I/usr/local/include -I/opt/vc/userland-master/host_applications/linux/libs/bcm_host/include -I/opt/vc/userland-master/host_applications/linux/apps/raspicam/gl_scenes -I/opt/vc/userland-master/interface/vcos -I/opt/vc/userland-master -I/opt/vc/userland-master/interface/vcos/pthreads -I/opt/vc/userland-master/interface/vmcs_host/linux -I/opt/vc/userland-master/interface/khronos/include -I/opt/vc/userland-master/interface/khronos/common -I/home/pi/Code/Bullseye/Bullseye_Vision/camcv/./gl_scenes -I/home/pi/Code/Bullseye/Bullseye_Vision/camcv/.   
 
 C_DEFINES = 
 
-CXX_FLAGS = -I/usr/local/include/opencv -I/usr/local/include -I/opt/vc/userland-master/host_applications/linux/libs/bcm_host/include -I/opt/vc/userland-master/host_applications/linux/apps/raspicam/gl_scenes -I/opt/vc/userland-master/interface/vcos -I/opt/vc/userland-master -I/opt/vc/userland-master/interface/vcos/pthreads -I/opt/vc/userland-master/interface/vmcs_host/linux -I/opt/vc/userland-master/interface/khronos/include -I/opt/vc/userland-master/interface/khronos/common -I/home/pi/camcv/./gl_scenes -I/home/pi/camcv/.   
+CXX_FLAGS = -I/usr/local/include/opencv -I/usr/local/include -I/opt/vc/userland-master/host_applications/linux/libs/bcm_host/include -I/opt/vc/userland-master/host_applications/linux/apps/raspicam/gl_scenes -I/opt/vc/userland-master/interface/vcos -I/opt/vc/userland-master -I/opt/vc/userland-master/interface/vcos/pthreads -I/opt/vc/userland-master/interface/vmcs_host/linux -I/opt/vc/userland-master/interface/khronos/include -I/opt/vc/userland-master/interface/khronos/common -I/home/pi/Code/Bullseye/Bullseye_Vision/camcv/./gl_scenes -I/home/pi/Code/Bullseye/Bullseye_Vision/camcv/.   
 
 CXX_DEFINES = 
 

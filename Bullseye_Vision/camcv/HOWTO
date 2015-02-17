@@ -1,4 +1,12 @@
+First note that we reference our own trained cinder_cascade_1.xml
+
+Second, double check the cmake config files are referencing this folder, and not /home/pi/camcv, 
+unless you are in that directory
+
 cd /home/pi/camcv
+make clean
+make
+
 ./camcv faces.csv histo threshold
 
 ./camcv faces.csv 1 5500

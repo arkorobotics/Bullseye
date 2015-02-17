@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/camcv
+CMAKE_SOURCE_DIR = /home/pi/Code/Bullseye/Bullseye_Vision/camcv
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/camcv
+CMAKE_BINARY_DIR = /home/pi/Code/Bullseye/Bullseye_Vision/camcv
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/camcv/CMakeFiles /home/pi/camcv/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles /home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/camcv/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

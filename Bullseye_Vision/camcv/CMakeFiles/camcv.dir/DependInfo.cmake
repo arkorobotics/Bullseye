@@ -5,22 +5,22 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_C
-  "/home/pi/camcv/RaspiCLI.c" "/home/pi/camcv/CMakeFiles/camcv.dir/RaspiCLI.c.o"
-  "/home/pi/camcv/RaspiCamControl.c" "/home/pi/camcv/CMakeFiles/camcv.dir/RaspiCamControl.c.o"
-  "/home/pi/camcv/RaspiPreview.c" "/home/pi/camcv/CMakeFiles/camcv.dir/RaspiPreview.c.o"
-  "/home/pi/camcv/RaspiTex.c" "/home/pi/camcv/CMakeFiles/camcv.dir/RaspiTex.c.o"
-  "/home/pi/camcv/RaspiTexUtil.c" "/home/pi/camcv/CMakeFiles/camcv.dir/RaspiTexUtil.c.o"
-  "/home/pi/camcv/gl_scenes/mirror.c" "/home/pi/camcv/CMakeFiles/camcv.dir/gl_scenes/mirror.c.o"
-  "/home/pi/camcv/gl_scenes/models.c" "/home/pi/camcv/CMakeFiles/camcv.dir/gl_scenes/models.c.o"
-  "/home/pi/camcv/gl_scenes/sobel.c" "/home/pi/camcv/CMakeFiles/camcv.dir/gl_scenes/sobel.c.o"
-  "/home/pi/camcv/gl_scenes/square.c" "/home/pi/camcv/CMakeFiles/camcv.dir/gl_scenes/square.c.o"
-  "/home/pi/camcv/gl_scenes/teapot.c" "/home/pi/camcv/CMakeFiles/camcv.dir/gl_scenes/teapot.c.o"
-  "/home/pi/camcv/gl_scenes/yuv.c" "/home/pi/camcv/CMakeFiles/camcv.dir/gl_scenes/yuv.c.o"
-  "/home/pi/camcv/tga.c" "/home/pi/camcv/CMakeFiles/camcv.dir/tga.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/RaspiCLI.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/RaspiCLI.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/RaspiCamControl.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/RaspiCamControl.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/RaspiPreview.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/RaspiPreview.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/RaspiTex.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/RaspiTex.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/RaspiTexUtil.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/RaspiTexUtil.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/gl_scenes/mirror.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/gl_scenes/mirror.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/gl_scenes/models.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/gl_scenes/models.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/gl_scenes/sobel.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/gl_scenes/sobel.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/gl_scenes/square.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/gl_scenes/square.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/gl_scenes/teapot.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/gl_scenes/teapot.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/gl_scenes/yuv.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/gl_scenes/yuv.c.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/tga.c" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/tga.c.o"
   )
 SET(CMAKE_C_COMPILER_ID "GNU")
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/pi/camcv/camcv.cpp" "/home/pi/camcv/CMakeFiles/camcv.dir/camcv.cpp.o"
+  "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/camcv.cpp" "/home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles/camcv.dir/camcv.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -50,10 +50,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/camcv
+CMAKE_SOURCE_DIR = /home/pi/Code/Bullseye/Bullseye_Vision/camcv
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/camcv
+CMAKE_BINARY_DIR = /home/pi/Code/Bullseye/Bullseye_Vision/camcv
 
 #=============================================================================
 # Target rules for target CMakeFiles/camcv.dir
@@ -62,7 +62,7 @@ CMAKE_BINARY_DIR = /home/pi/camcv
 CMakeFiles/camcv.dir/all:
 	$(MAKE) -f CMakeFiles/camcv.dir/build.make CMakeFiles/camcv.dir/depend
 	$(MAKE) -f CMakeFiles/camcv.dir/build.make CMakeFiles/camcv.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/camcv/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13
 	@echo "Built target camcv"
 .PHONY : CMakeFiles/camcv.dir/all
 
@@ -72,9 +72,9 @@ all: CMakeFiles/camcv.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/camcv.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/camcv/CMakeFiles 13
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles 13
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/camcv.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/camcv/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/Code/Bullseye/Bullseye_Vision/camcv/CMakeFiles 0
 .PHONY : CMakeFiles/camcv.dir/rule
 
 # Convenience name for target.
