@@ -30,6 +30,7 @@
 #include <math.h>
 
 static __IO uint32_t uwTimingDelay;
+static void Delay(__IO uint32_t nTime);
 void TimingDelay_Decrement(void);
 
 void TIM3_Config(void);
@@ -40,8 +41,10 @@ void TIM7_Config(void);
 void TIM_Config(void);
 
 void DriveInit(void);
-void Move_Forward(void);
-void Move_Backward(void);
+void SetDirection_Forward(void);
+void SetDirection_Backward(void);
+void SetRotation_Left(void);
+void SetRotation_Right(void);
 void SetRightFrontWheelPwm(unsigned char);
 void SetRightBackWheelPwm(unsigned char);
 void SetLeftFrontWheelPwm(unsigned char);
@@ -57,27 +60,65 @@ extern uint32_t LeftBack_Frequency_Raw;
 extern uint32_t RightFront_Frequency_Raw;
 extern uint32_t RightBack_Frequency_Raw;
 
+extern int CMD_Left;
+extern int CMD_Right;
+
 #define Set_IN2			GPIOE->BSRRL = (1<<4)
 #define Clear_IN2		GPIOE->BSRRH = (1<<4)
 #define Set_IN1			GPIOE->BSRRL = (1<<2)
 #define Clear_IN1		GPIOE->BSRRH = (1<<2)
 
+typedef enum { TUG_OF_WAR, RELAY_RACE, MOO, ROUND_UP, WAYPOINT } state_mode;
+state_mode current_state = TUG_OF_WAR;
 
 int main(void)
 {
 	DriveInit();			// Initialize GPIO Pins
-	Move_Forward();			// Set initial direction to forward
+	SetDirection_Forward();			// Set initial direction to forward
 
 	TIM3_Config();			// Configure Timer 3: PWM 
 	TIM7_Config();			// Configure Timer 7: PID Timer Loop
 	TIM_Config();			// Configure Timers 1,2,4,5: Frequency input from encoders
 
+	// System Tick Handler configured to 100Hz
+	SysTick_Config(SystemCoreClock/100);
+
 	while (1)
 	{
-		// Do Nothing, let the interrupts do their thing
+		// Run the state machine
+		switch(current_state)
+		{
+			case TUG_OF_WAR:
+				SetDirection_Forward();
+				Delay(10);
+				break;
+			case RELAY_RACE:
+
+				break;
+			case MOO:
+
+				break;
+			case ROUND_UP:
+
+				break;
+			case WAYPOINT:
+
+				break;
+			default:
+				// Turn off motors
+				CMD_Left = 0;
+				CMD_Right = 0;
+				break;
+		}
 	}
 }
 
+
+void Delay(__IO uint32_t nTime){ 
+  uwTimingDelay = nTime;
+
+  while(uwTimingDelay != 0);
+}
 
 void TimingDelay_Decrement(void){
   if (uwTimingDelay != 0x00)
@@ -366,7 +407,7 @@ void DriveInit(void)
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
-void Move_Forward(void)
+void SetDirection_Forward(void)
 {
 	//Clockwise Control
 	//IN2 must be a logic low
@@ -375,13 +416,23 @@ void Move_Forward(void)
 	Set_IN1;
 }
 
-void Move_Backward(void)
+void SetDirection_Backward(void)
 {
 	//Counter Clockwise Control
 	//IN1 must be a logic low
 	Clear_IN1;
 	//IN2 must be a logic high
 	Set_IN2;
+}
+
+void SetRotation_Left(void)
+{
+
+}
+
+void SetRotation_Right(void)
+{
+
 }
 
 void SetRightFrontWheelPwm(unsigned char PwmDutyCycle)

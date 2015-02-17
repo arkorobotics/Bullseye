@@ -537,5 +537,6 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+	// System Tick Handler fires at 100Hz
 	TimingDelay_Decrement();
 }
