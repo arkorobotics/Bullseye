@@ -1,0 +1,287 @@
+C:\opencv\build\x86\vc10\bin>opencv_createsamples.exe -info cinder_train.txt -bg 
+cinder_train_neg.txt -num 100 -vec cinder.vec -w 20 -h 20
+
+
+C:\opencv\build\x86\vc10\bin>opencv_traincascade.exe -vec cinder.vec -bg cinder_
+train_neg.txt -data cinder -featureType LBP -numPos 100 -numNeg 100 -w 20 -h 20
+PARAMETERS:
+cascadeDirName: cinder
+vecFileName: cinder.vec
+bgFileName: cinder_train_neg.txt
+numPos: 100
+numNeg: 100
+numStages: 20
+precalcValBufSize[Mb] : 256
+precalcIdxBufSize[Mb] : 256
+stageType: BOOST
+featureType: LBP
+sampleWidth: 20
+sampleHeight: 20
+boostType: GAB
+minHitRate: 0.995
+maxFalseAlarmRate: 0.3
+weightTrimRate: 0.95
+maxDepth: 1
+maxWeakCount: 100
+
+===== TRAINING 0-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 1
+Precalculation time: 0.007
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 1-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.526316
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 2-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.186567
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 3-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.0223664
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 4-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.0032257
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 5-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.0116347
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 6-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00294907
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 7-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00209363
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 8-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00191983
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 0 seconds.
+
+===== TRAINING 9-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00168557
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 10-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00187182
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 11-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00284641
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 12-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00367431
+Precalculation time: 0.007
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 13-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00310646
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 14-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00187389
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 15-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00485838
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 1 seconds.
+
+===== TRAINING 16-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00235278
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 2 seconds.
+
+===== TRAINING 17-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00243706
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 2 seconds.
+
+===== TRAINING 18-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00170861
+Precalculation time: 0.005
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 2 seconds.
+
+===== TRAINING 19-stage =====
+<BEGIN
+POS count : consumed   100 : 100
+NEG count : acceptanceRatio    100 : 0.00146357
+Precalculation time: 0.006
++----+---------+---------+
+|  N |    HR   |    FA   |
++----+---------+---------+
+|   1|        1|        0|
++----+---------+---------+
+END>
+Training until now has taken 0 days 0 hours 0 minutes 2 seconds.
+
+C:\opencv\build\x86\vc10\bin>
