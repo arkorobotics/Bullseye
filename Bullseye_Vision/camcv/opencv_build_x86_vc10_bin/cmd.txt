@@ -1,4 +1,14 @@
 C:\opencv\build\x86\vc10\bin>opencv_createsamples.exe -info cinder_train.txt -bg 
+cinder_train_neg.txt -num 89 -vec cinder.vec -w 20 -h 20
+
+C:\opencv\build\x86\vc10\bin>opencv_traincascade.exe -vec cinder.vec -bg cinder_
+train_neg.txt -data cinder -featureType HAAR -numPos 89 -numNeg 65 -w 20 -h 20
+
+------
+OLD
+------
+
+C:\opencv\build\x86\vc10\bin>opencv_createsamples.exe -info cinder_train.txt -bg 
 cinder_train_neg.txt -num 100 -vec cinder.vec -w 20 -h 20
 
 
