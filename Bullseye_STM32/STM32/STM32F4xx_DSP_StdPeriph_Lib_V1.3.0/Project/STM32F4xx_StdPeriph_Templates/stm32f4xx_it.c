@@ -29,6 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include "math.h"
 
 /** @addtogroup STM32F4xx_StdPeriph_Examples
   * @{
@@ -68,8 +69,12 @@ int last_error5 = 0;
 	double Kp = 0.278;
 	double Ki = 0.003;
 	double Kd = 0.0008;
+	double Kp1 = 0.278;
+	double Ki1 = 0.003;
+	double Kd1 = 0.0008;
 unsigned char PWM_Out5;
 uint32_t freq5;
+double d5, od5 = 0;
 
 int error1 = 0;
 int integral1 = 0;
@@ -77,6 +82,7 @@ int diff1 = 0;
 int last_error1 = 0;
 unsigned char PWM_Out1;
 uint32_t freq1;
+double d1, od1 = 0;
 
 int error2 = 0;
 int integral2 = 0;
@@ -84,6 +90,7 @@ int diff2 = 0;
 int last_error2 = 0;
 unsigned char PWM_Out2;
 uint32_t freq2;
+double d2, od2 = 0;
 
 int error4 = 0;
 int integral4 = 0;
@@ -91,14 +98,38 @@ int diff4 = 0;
 int last_error4 = 0;
 unsigned char PWM_Out4;
 uint32_t freq4;
+double d4, od4 = 0;
+
+int errorRight = 0;
+int integralRight = 0;
+int diffRight = 0;
+int last_errorRight = 0;
+
+int errorLeft = 0;
+int integralLeft = 0;
+int diffLeft = 0;
+int last_errorLeft = 0;
 
 int pid_out1 = 0;
 int pid_out2 = 0;
 int pid_out5 = 0;
 int pid_out4 = 0;
+
+double cmdDistanceLeft, cmdDistanceRight, cmdODR, cmdODL = 0;
+double averageLeft, averageRight;
+double r = 0.05; //diameter is 0.1 meters
+double t = 0.001;//1kHz => 1ms for timer7 
+int CMDLD = 1500;
+int CMDRD = 1500;
 int CMDL = 1500;
 int CMDR = 1500;
+//for testing only below
+int count = 0;
+int heart = 0;
+#define Set					GPIOD->BSRRL = (1<<15)
+#define Clear				GPIOD->BSRRH = (1<<15)
 
+extern int straight;
 extern void SetLeftFrontWheelPwm(int);
 extern void SetLeftBackWheelPwm(int);
 extern void SetRightFrontWheelPwm(int);
@@ -351,7 +382,7 @@ TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 		if (integral5<0)
 	{integral5 = 0;}
 	diff5 = (error5 - last_error5);//-1050
-	pid_out5 = (((0.278)*error5)+((0.003)*integral5) + ((0.0008)*diff5));
+	pid_out5 = (((1)*error5)+((0.0001)*integral5) + ((0.0001)*diff5));
 	if (pid_out5>100)
 		{PWM_Out5=100;}
 	else if (pid_out5<0)
@@ -373,7 +404,8 @@ SetLeftFrontWheelPwm(PWM_Out5);
 		if (integral1<0)
 	{integral1 = 0;}
 	diff1 = (error1 - last_error1);//-1050
-	pid_out1 = (((0.2782)*error1)+((0.00365)*integral1) + ((0.00097)*diff1));
+	pid_out1 = (((1)*error1)+((0.0005)*integral1) + ((0.0001)*diff1));
+	//pid_out1 = (((0.2782)*error1)+((0.00365)*integral1) + ((0.00097)*diff1));
 	if (pid_out1>100)
 		{PWM_Out1=100;}
 	else if (pid_out1<0)
@@ -395,7 +427,7 @@ SetLeftBackWheelPwm(PWM_Out1);
 		if (integral2<0)
 	{integral2 = 0;}
 	diff2 = (error2 - last_error2);//-1050
-	pid_out2 = (((0.278)*error2)+((0.0035)*integral2) + ((0.0008)*diff2));
+	pid_out2 = (((1.5)*error2)+((0.0005)*integral2) + ((0.0001)*diff2));
 	if (pid_out2>100)
 		{PWM_Out2=100;}
 	else if (pid_out2<0)
@@ -417,7 +449,7 @@ SetRightBackWheelPwm(PWM_Out2);
 		if (integral4<0)
 	{integral4 = 0;}
 	diff4 = (error4 - last_error4);//-1050
-	pid_out4 = (((0.278)*error4)+((0.0037)*integral4) + ((0.00087)*diff4));
+	pid_out4 = (((1.5)*error4)+((0.0005)*integral4) + ((0.0001)*diff4));
 	if (pid_out4>100)
 		{PWM_Out4=100;}
 	else if (pid_out4<0)
@@ -425,6 +457,62 @@ SetRightBackWheelPwm(PWM_Out2);
 		else {PWM_Out4 = (unsigned char)pid_out4;}
 	last_error4 = error4;
 SetRightFrontWheelPwm(PWM_Out4);
+		
+		//Distance Calculations for all Motors
+		cmdDistanceLeft = 2*(3.141592657)*r*CMDLD*t;
+		cmdODL = cmdODL + cmdDistanceLeft;
+		cmdDistanceRight = 2*(3.141592657)*r*CMDRD*t;
+		cmdODR = cmdODR + cmdDistanceRight;
+		
+		d5 = 2*(3.141592657)*r*freq5*t;//Front Left
+		od5 = od5 +d5;
+		d1 = 2*(3.141592657)*r*freq1*t;//Back Left
+		od1 = od1 +d1;
+		averageLeft = (od5+od1)/2;
+		
+		d2 = 2*(3.141592657)*r*freq2*t;//Back Right
+		od2 = od2 +d2;
+		d4 = 2*(3.141592657)*r*freq4*t;//Front Right
+		od4 = od4 +d4;
+		averageRight = (od4+od2)/2;
+		
+		//CMD PID:
+		//Left:
+//		if(cmdODL>averageLeft)
+//			{
+//			errorLeft = cmdODL - averageLeft;
+//			CMDL = CMDL+errorLeft;
+//				if(CMDL>3750){CMDL=3750;}
+//				else if(CMDL<0){CMDL = 0;}
+//			}
+//		else if(averageLeft>cmdODL)
+//			{
+//			errorLeft = averageLeft - cmdODL;
+//			CMDL = CMDL-errorLeft;
+//				if(CMDL>3750){CMDL=3750;}
+//				else if(CMDL<0){CMDL = 0;}
+//			}
+//			//Right:
+//		if(cmdODR>averageRight)
+//			{
+//			errorRight = cmdODR - averageRight;
+//			CMDR = CMDR+errorRight;
+//				if(CMDR>3750){CMDR=3750;}
+//				else if(CMDR<0){CMDR = 0;}
+//			}
+//		else if(averageRight>cmdODR)
+//			{
+//			errorRight = averageRight - cmdODR;
+//			CMDR = CMDR-errorRight;
+//				if(CMDR>3750){CMDR=3750;}
+//				else if(CMDR<0){CMDR = 0;}
+//			}
+					count = count + 1;
+		if(count == 1000){
+count = 0; heart = !heart;
+		}
+		if(heart==1){Set;} 
+		else if(heart==0){Clear;}
 	}
 }
 

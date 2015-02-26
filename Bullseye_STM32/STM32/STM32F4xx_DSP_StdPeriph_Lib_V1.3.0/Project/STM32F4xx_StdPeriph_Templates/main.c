@@ -10,6 +10,7 @@ static unsigned char leftBackDuty = 0;
 static unsigned char currDuty = 0;
 uint16_t PrescalerValue = 0;
 static __IO uint32_t uwTimingDelay;
+int straight;
 
 void init(void);
 void PreScale_TIME_Init(void);
@@ -29,10 +30,15 @@ extern uint32_t Frequency2;
 extern uint32_t Frequency5;
 extern uint32_t uwTIM1Freq;
 
-#define Set_IN2					GPIOE->BSRRL = (1<<4)
-#define Clear_IN2				GPIOE->BSRRH = (1<<4)
-#define Set_IN1					GPIOE->BSRRL = (1<<2)
-#define Clear_IN1				GPIOE->BSRRH = (1<<2)
+#define Set_IN2_Left					GPIOE->BSRRL = (1<<4)
+#define Clear_IN2_Left				GPIOE->BSRRH = (1<<4)
+#define Set_IN1_Left					GPIOE->BSRRL = (1<<2)
+#define Clear_IN1_Left				GPIOE->BSRRH = (1<<2)
+
+#define Set_IN2_Right					GPIOE->BSRRL = (1<<3)
+#define Clear_IN2_Right				GPIOE->BSRRH = (1<<3)
+#define Set_IN1_Right					GPIOE->BSRRL = (1<<5)
+#define Clear_IN1_Right				GPIOE->BSRRH = (1<<5)
 
 void mainInit(){
 TMR3_PWM_Init();
@@ -204,37 +210,53 @@ void DriveInit(){
 			GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 			GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_2; //4: IN2  2:IN1
+    	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_2 | GPIO_Pin_5 | GPIO_Pin_3; //4: IN2  2:IN1
 			GPIO_Init(GPIOE, &GPIO_InitStructure);
+}
+void Test(){
+				GPIO_InitTypeDef GPIO_InitStructure; //this
+			RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE); //power up
+			RCC_AHB1PeriphClockCmd(RCC_AHB1ENR_GPIODEN,ENABLE); //enable
+			
+			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 
+			GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+			GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15; //4: IN2  2:IN1
+			GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 void Move_Forward(){ //Clockwise Control
 //IN2 must be a logic low
-	Clear_IN2;
+	Clear_IN2_Left;
+	Clear_IN2_Right;
 //IN1 must be a logic high
-	Set_IN1;
+	Set_IN1_Left;
+	Set_IN1_Right;
 }
 void Move_Backward(){//Counter Clockwise Control
 //IN1 must be a logic low
-	Clear_IN1;
+	Clear_IN1_Left;
+	Clear_IN1_Right;
 //IN2 must be a logic high
-	Set_IN2;
+	Set_IN2_Left;
+	Set_IN2_Right;
 }
 
 	void TIM7_Config(){
 NVIC_InitTypeDef NVIC_InitStructure;
-/* Enable the TIM8 gloabal Interrupt */
+/* Enable the TIM7 gloabal Interrupt */
 NVIC_InitStructure.NVIC_IRQChannel = TIM7_IRQn;
 NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
 NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 NVIC_Init(&NVIC_InitStructure);
  
-/* TIM2 clock enable */
+/* TIM7 clock enable */
 RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
 /* Time base configuration */
-TIM_TimeBaseStructure.TIM_Period = 10000 - 1; // 1 MHz down to 1 KHz (1 ms)
-TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
-TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+TIM_TimeBaseStructure.TIM_Period = 157952; // 1 MHz down to 1 KHz (1 ms)
+TIM_TimeBaseStructure.TIM_Prescaler = 0; 
+TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 TIM_TimeBaseInit(TIM7, &TIM_TimeBaseStructure);
 /* TIM IT enable */
@@ -243,10 +265,11 @@ TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
 TIM_Cmd(TIM7, ENABLE); 
 	}
 int main(void){
+	straight=1;
 		mainInit();
 	  DriveInit();
 	Move_Forward();
-
+Test();
 TIM7_Config();
 TIM_Config();	
   
