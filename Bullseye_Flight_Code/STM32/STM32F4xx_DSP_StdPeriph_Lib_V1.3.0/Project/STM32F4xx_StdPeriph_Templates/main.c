@@ -63,18 +63,26 @@ extern uint32_t RightBack_Frequency_Raw;
 extern int CMD_Left;
 extern int CMD_Right;
 
-#define Set_IN2			GPIOE->BSRRL = (1<<4)
-#define Clear_IN2		GPIOE->BSRRH = (1<<4)
-#define Set_IN1			GPIOE->BSRRL = (1<<2)
-#define Clear_IN1		GPIOE->BSRRH = (1<<2)
+extern double CMD_Distance;
+extern double AverageDistanceTravelled;
+
+#define Set_IN1_Left				GPIOE->BSRRL = (1<<2)
+#define Clear_IN1_Left				GPIOE->BSRRH = (1<<2)
+#define Set_IN2_Left				GPIOE->BSRRL = (1<<4)
+#define Clear_IN2_Left				GPIOE->BSRRH = (1<<4)
+
+#define Set_IN1_Right				GPIOE->BSRRL = (1<<5)
+#define Clear_IN1_Right				GPIOE->BSRRH = (1<<5)
+#define Set_IN2_Right				GPIOE->BSRRL = (1<<3)
+#define Clear_IN2_Right				GPIOE->BSRRH = (1<<3)
 
 typedef enum { TUG_OF_WAR, RELAY_RACE, MOO, ROUND_UP, WAYPOINT } state_mode;
 state_mode current_state = TUG_OF_WAR;
 
 int main(void)
 {
-	DriveInit();			// Initialize GPIO Pins
-	SetDirection_Forward();			// Set initial direction to forward
+	DriveInit();				// Initialize GPIO Pins
+	SetDirection_Forward();		// Set initial direction to forward
 
 	TIM3_Config();			// Configure Timer 3: PWM 
 	TIM7_Config();			// Configure Timer 7: PID Timer Loop
@@ -269,9 +277,9 @@ void TIM7_Config(void)
 	/* TIM2 clock enable */
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM7, ENABLE);
 	/* Time base configuration */
-	TIM_TimeBaseStructure.TIM_Period = 10000 - 1; // 1 MHz down to 1 KHz (1 ms)
-	TIM_TimeBaseStructure.TIM_Prescaler = 84 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
-	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_Period = 157952; // 1 MHz down to 1 KHz (1 ms)
+	TIM_TimeBaseStructure.TIM_Prescaler = 0; 
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM7, &TIM_TimeBaseStructure);
 	/* TIM IT enable */
@@ -403,26 +411,30 @@ void DriveInit(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5;
 	GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 
 void SetDirection_Forward(void)
 {
 	//Clockwise Control
-	//IN2 must be a logic low
-	Clear_IN2;
 	//IN1 must be a logic high
-	Set_IN1;
+	Set_IN1_Left;
+	Set_IN1_Right;
+	//IN2 must be a logic low
+	Clear_IN2_Left;
+	Clear_IN2_Right;
 }
 
 void SetDirection_Backward(void)
 {
 	//Counter Clockwise Control
 	//IN1 must be a logic low
-	Clear_IN1;
+	Clear_IN1_Left;
+	Clear_IN1_Right;
 	//IN2 must be a logic high
-	Set_IN2;
+	Set_IN2_Left;
+	Set_IN2_Right;
 }
 
 void SetRotation_Left(void)

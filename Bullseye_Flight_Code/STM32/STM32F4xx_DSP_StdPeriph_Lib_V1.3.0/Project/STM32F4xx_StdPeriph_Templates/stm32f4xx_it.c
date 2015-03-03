@@ -19,9 +19,9 @@
 __IO uint16_t IC5Value = 0;
 __IO uint16_t DutyCycle5 = 0;
 __IO uint32_t LeftFront_Frequency_Raw = 0;
-double LeftFront_Kp = 0.278;
-double LeftFront_Ki = 0.003;
-double LeftFront_Kd = 0.0008;
+double LeftFront_Kp = 1.0000;
+double LeftFront_Ki = 0.0001;
+double LeftFront_Kd = 0.0001;
 int LeftFront_Error = 0;
 int LeftFront_Integral = 0;
 int LeftFront_Diff = 0;
@@ -39,9 +39,9 @@ __IO uint16_t uhIC3ReadValue2 = 0;
 __IO uint16_t uhCaptureNumber = 0;
 __IO uint32_t uwCapture = 0;
 __IO uint32_t LeftBack_Frequency_Raw = 0;
-double LeftBack_Kp = 0.2782;
-double LeftBack_Ki = 0.00365;
-double LeftBack_Kd = 0.00097;
+double LeftBack_Kp = 1.0000;
+double LeftBack_Ki = 0.0005;
+double LeftBack_Kd = 0.0001;
 int LeftBack_Error = 0;
 int LeftBack_Integral = 0;
 int LeftBack_Diff = 0;
@@ -57,9 +57,9 @@ uint32_t LeftBack_Frequency;
 __IO uint16_t IC4Value = 0;
 __IO uint16_t DutyCycle4 = 0;
 __IO uint32_t RightFront_Frequency_Raw = 0;
-double RightFront_Kp = 0.278;
-double RightFront_Ki = 0.0037;
-double RightFront_Kd = 0.00087;
+double RightFront_Kp = 1.5000;
+double RightFront_Ki = 0.0005;
+double RightFront_Kd = 0.0001;
 int RightFront_Error = 0;
 int RightFront_Integral = 0;
 int RightFront_Diff = 0;
@@ -75,9 +75,9 @@ uint32_t RightFront_Frequency;
 __IO uint16_t IC2Value = 0;
 __IO uint16_t DutyCycle2 = 0;
 __IO uint32_t RightBack_Frequency_Raw = 0;
-double RightBack_Kp = 0.278;
-double RightBack_Ki = 0.0035;
-double RightBack_Kd = 0.0008;
+double RightBack_Kp = 1.5000;
+double RightBack_Ki = 0.0005;
+double RightBack_Kd = 0.0001;
 int RightBack_Error = 0;
 int RightBack_Integral = 0;
 int RightBack_Diff = 0;
@@ -89,10 +89,38 @@ uint32_t RightBack_Frequency;
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Wheel Command - Variables
+// Wheel - Variables
 /////////////////////////////////////////////////////////////////////////////
 int CMD_Left = 1500;
 int CMD_Right = 1500;
+
+double CMD_Distance = 0;
+
+double CMD_DistanceLeft = 0;
+double CMD_DistanceRight = 0;
+double CMD_ODR = 0;
+double CMD_ODL = 0;
+
+double LF_DeltaDistance = 0;
+double LF_Distance = 0;
+double RF_DeltaDistance = 0;
+double RF_Distance = 0;
+double LB_DeltaDistance = 0;
+double LB_Distance = 0;
+double RB_DeltaDistance = 0;
+double RB_Distance = 0;
+
+double AverageDistance_Left = 0; 
+double AverageDistance_Right = 0;
+double AverageDistanceTravelled = 0;
+
+double r = 0.05; 					// Wheel radius: 0.1 meters
+double dt = 0.001;					// dt: 1kHz => 1ms for timer7
+
+int heart_count = 0;
+int heart_led = 0;
+#define Set_LED				GPIOD->BSRRL = (1<<15)
+#define Clear_LED			GPIOD->BSRRH = (1<<15)
 
 
 extern void SetLeftFrontWheelPwm(int);
@@ -442,6 +470,47 @@ void TIM7_IRQHandler(void)
 
 
 		/////////////////////////////////////////////////////////////////////////////
+		// Odometry
+		/////////////////////////////////////////////////////////////////////////////
+		//Distance Calculations for all Motors
+		// Note: 1632 divide the velocity by 48*34
+		CMD_DistanceLeft = 2*(3.141592657)*r*(CMD_Left/(48*34))*dt; 
+		CMD_ODL = CMD_ODL + CMD_DistanceLeft;
+		CMD_DistanceRight = 2*(3.141592657)*r*(CMD_Right/(48*34))*dt;
+		CMD_ODR = CMD_ODR + CMD_DistanceRight;
+		
+		LF_DeltaDistance = 2*(3.141592657)*r*(LeftFront_Frequency/(48*34))*dt;		//Left Front
+		LF_Distance = LF_Distance + LF_DeltaDistance;
+		RF_DeltaDistance = 2*(3.141592657)*r*(LeftBack_Frequency/(48*34))*dt;		//Left Back
+		RF_Distance = RF_Distance + RF_DeltaDistance;
+		AverageDistance_Left = (LF_Distance + RF_Distance)/2;
+		
+		LB_DeltaDistance = 2*(3.141592657)*r*(RightFront_Frequency/(48*34))*dt;		//Right Front
+		LB_Distance = LB_Distance + LB_DeltaDistance;
+		RB_DeltaDistance = 2*(3.141592657)*r*(RightBack_Frequency/(48*34))*dt;		//Right Back
+		RB_Distance = RB_Distance + RB_DeltaDistance;
+		AverageDistance_Right = (LB_Distance + RB_Distance)/2;
+
+		AverageDistanceTravelled = (AverageDistance_Left + AverageDistance_Right)/2;
+
+
+		/////////////////////////////////////////////////////////////////////////////
+		// Heartbeat
+		/////////////////////////////////////////////////////////////////////////////
+		heart_count = heart_count + 1;
+		if(heart_count == 1000)
+		{
+			heart_count = 0; 
+			heart_led = !heart_led;
+		}
+		if(heart_led==1)
+		{
+			Set_LED;
+		} 
+		else if(heart_led==0)
+		{
+			Clear_LED;
+		}
 	}
 }
 
@@ -539,4 +608,6 @@ void SysTick_Handler(void)
 {
 	// System Tick Handler fires at 100Hz
 	TimingDelay_Decrement();
+
+
 }
