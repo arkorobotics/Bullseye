@@ -27,6 +27,7 @@
 // --------------------------------------------------------------------
 
 #include "stm32f4xx.h"
+#include "imu.h"
 #include <math.h>
 
 static __IO uint32_t uwTimingDelay;
@@ -91,6 +92,8 @@ int main(void)
 	// System Tick Handler configured to 100Hz
 	SysTick_Config(SystemCoreClock/100);
 
+	IMU_Init();
+	
 	while (1)
 	{
 		// Run the state machine

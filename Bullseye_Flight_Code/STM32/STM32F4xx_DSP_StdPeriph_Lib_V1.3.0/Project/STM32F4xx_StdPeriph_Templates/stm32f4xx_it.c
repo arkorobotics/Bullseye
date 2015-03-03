@@ -12,7 +12,7 @@
 // --------------------------------------------------------------------
 
 #include "stm32f4xx_it.h"
-
+#include "imu.h"
 /////////////////////////////////////////////////////////////////////////////
 // Left Front Wheel - Variables
 /////////////////////////////////////////////////////////////////////////////
@@ -608,6 +608,9 @@ void SysTick_Handler(void)
 {
 	// System Tick Handler fires at 100Hz
 	TimingDelay_Decrement();
-
-
+	
+	// Update IMU Accel, Gyro, Mag values
+	IMU_Update();
+	heading = heading + gyro[2]*(0.01);
+	
 }
