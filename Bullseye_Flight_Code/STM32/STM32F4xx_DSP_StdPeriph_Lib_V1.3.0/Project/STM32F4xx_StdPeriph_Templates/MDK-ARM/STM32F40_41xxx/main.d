@@ -34,5 +34,10 @@
 .\stm32f40_41xxx\main.o: ..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dac.h
 .\stm32f40_41xxx\main.o: ..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h
 .\stm32f40_41xxx\main.o: ..\..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h
+.\stm32f40_41xxx\main.o: ..\drive.h
 .\stm32f40_41xxx\main.o: ..\imu.h
+.\stm32f40_41xxx\main.o: ..\i2c.h
+.\stm32f40_41xxx\main.o: ..\speaker.h
+.\stm32f40_41xxx\main.o: ..\stm32f4xx_it.h
 .\stm32f40_41xxx\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\stm32f40_41xxx\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

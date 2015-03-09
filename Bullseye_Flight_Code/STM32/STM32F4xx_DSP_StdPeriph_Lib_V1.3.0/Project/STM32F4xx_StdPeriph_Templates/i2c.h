@@ -14,10 +14,12 @@ unsigned char I2cWrite(unsigned char I2cAddress, unsigned char Register, signed 
 unsigned char I2cWriteConfig(unsigned char I2cAddress, unsigned char Register, unsigned char Data);
 unsigned char I2cWriteMag(unsigned char I2cAddress,unsigned char DeviceID, unsigned char Register, signed char Data);
 unsigned char I2cReadMag(unsigned char I2cAddress, unsigned char DeviceID, unsigned char Register, signed char *pData, short unsigned int Length);
+unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsigned int Length);
+
 void I2CInit(void);
 
 
 
 #endif /* I2C_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/*****************************END OF FILE**************************************/

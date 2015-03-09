@@ -13,6 +13,8 @@
 
 #include "stm32f4xx_it.h"
 #include "imu.h"
+#include "speaker.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // Left Front Wheel - Variables
 /////////////////////////////////////////////////////////////////////////////
@@ -613,4 +615,31 @@ void SysTick_Handler(void)
 	IMU_Update();
 	heading = heading + gyro[2]*(0.01);
 	
+}
+
+/******************************************************************************/
+/*                 STM32F4xx Peripherals Interrupt Handlers                   */
+/*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+/*  available peripheral interrupt handler's name please refer to the startup */
+/*  file (startup_stm32f40xx.s/startup_stm32f427x.s).                         */
+/******************************************************************************/
+
+/**
+  * @brief  This function handles External line 15 interrupt request.
+  * @param  None
+  * @retval None
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  if(EXTI_GetITStatus(EXTI_Line0) != RESET)
+  { 
+    /* Change the wave */
+    ubKeyPressed = 1;
+
+    /* Change the selected waves forms */
+    ubSelectedWavesForm = !ubSelectedWavesForm;
+
+    /* Clear the Right Button EXTI line pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line0);
+  }
 }

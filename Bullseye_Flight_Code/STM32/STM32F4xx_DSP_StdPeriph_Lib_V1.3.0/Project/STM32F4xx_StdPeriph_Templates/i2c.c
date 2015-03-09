@@ -17,6 +17,7 @@
 // I2C - Variables
 /////////////////////////////////////////////////////////////////////////////
 #define LONG_TIMEOUT				((uint32_t)0x12C000)
+#define LONGER_TIMEOUT				((uint32_t)0x5A00000)
 
 /////////////////////////////////////////////////////////////////////////////
 // I2C - Functions
@@ -390,6 +391,66 @@ unsigned char I2cReadMag(unsigned char I2cAddress, unsigned char DeviceID, unsig
 	I2C_GenerateSTOP(I2C1, ENABLE); /* End the configuration sequence */ 
 
 	Timeout = LONG_TIMEOUT;
+	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
+	{
+		if((Timeout--) == 0) 
+			return 1;
+	}
+
+	I2C_AcknowledgeConfig(I2C1, ENABLE);
+	return 0;  /* Return the verifying value: 0 (Passed) or 1 (Failed) */		
+}
+
+unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsigned int Length){
+	__IO uint32_t Timeout = LONGER_TIMEOUT;  
+
+	Timeout = LONGER_TIMEOUT;
+	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
+	{
+		if((Timeout--) == 0) 
+			return 1;
+	}
+
+	I2C_GenerateSTART(I2C1, ENABLE);// Start the config sequence 
+
+	Timeout = LONGER_TIMEOUT;
+	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))// Test on EV5 and clear it 
+	{
+		if((Timeout--) == 0) 
+			return 1;
+	}
+
+	I2C_Send7bitAddress(I2C1, I2cAddress , I2C_Direction_Receiver);/* Transmit the slave address and enable writing operation */
+
+	Timeout = LONGER_TIMEOUT;
+	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))/* Test on EV6 and clear it */
+	{
+		if((Timeout--) == 0) 
+			return 1;
+	}
+
+	(void)I2C1->SR2;
+
+	Length--;		//needed to receive correct number of bytes
+	while(Length > 0)
+	{
+		Timeout = LONGER_TIMEOUT;
+		while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED)) /* Test on EV7 and clear it */
+		{
+			if((Timeout--) == 0) 
+				return 1;
+		}	
+
+		if(Length == 1)
+			I2C_AcknowledgeConfig(I2C1, DISABLE);
+
+		*pData++ = I2C_ReceiveData(I2C1);
+		Length--;
+	}
+
+	I2C_GenerateSTOP(I2C1, ENABLE); /* End the configuration sequence */ 
+
+	Timeout = LONGER_TIMEOUT;
 	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
 	{
 		if((Timeout--) == 0) 
