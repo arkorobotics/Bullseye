@@ -11,6 +11,7 @@ static unsigned char currDuty = 0;
 uint16_t PrescalerValue = 0;
 static __IO uint32_t uwTimingDelay;
 int straight;
+int go = 1;
 
 void init(void);
 void PreScale_TIME_Init(void);
@@ -29,6 +30,7 @@ extern uint32_t Frequency4;
 extern uint32_t Frequency2;
 extern uint32_t Frequency5;
 extern uint32_t uwTIM1Freq;
+extern int RAMPUP;
 
 #define Set_IN2_Left					GPIOE->BSRRL = (1<<4)
 #define Clear_IN2_Left				GPIOE->BSRRH = (1<<4)
@@ -214,9 +216,12 @@ void DriveInit(){
 			GPIO_Init(GPIOE, &GPIO_InitStructure);
 }
 void Test(){
-				GPIO_InitTypeDef GPIO_InitStructure; //this
+			GPIO_InitTypeDef GPIO_InitStructure; //this
 			RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE); //power up
 			RCC_AHB1PeriphClockCmd(RCC_AHB1ENR_GPIODEN,ENABLE); //enable
+	
+			GPIO_InitTypeDef  GPIO_InitStruct;
+			RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 			
 			GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT; 
 			GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
@@ -224,6 +229,13 @@ void Test(){
 			GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15; //4: IN2  2:IN1
 			GPIO_Init(GPIOD, &GPIO_InitStructure);
+					
+			GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0;
+			GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+			GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+			GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+			GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+			GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 void Move_Forward(){ //Clockwise Control
 //IN2 must be a logic low
@@ -265,11 +277,17 @@ TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
 TIM_Cmd(TIM7, ENABLE); 
 	}
 int main(void){
+		// System Tick Handler configured to 100Hz
+	SysTick_Config(SystemCoreClock/100);
+Test();
+while(go){
+	if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)==1){
+		RAMPUP=1;
+		go = 0;
 	straight=1;
 		mainInit();
 	  DriveInit();
 	Move_Forward();
-Test();
 TIM7_Config();
 TIM_Config();	
   
@@ -316,7 +334,7 @@ TIM_Config();
    TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
    TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	 
   while (1){
-	}
+	}}}
 }
 
 void TIM_Config(void){

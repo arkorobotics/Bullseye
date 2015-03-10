@@ -66,9 +66,9 @@ int error5 = 0;
 int integral5 = 0;
 int diff5 = 0;
 int last_error5 = 0;
-	double Kp = 0.278;
-	double Ki = 0.003;
-	double Kd = 0.0008;
+	double Kp = 1;
+	double Ki = 0.0005;
+	double Kd = 0.0001;
 	double Kp1 = 0.278;
 	double Ki1 = 0.003;
 	double Kd1 = 0.0008;
@@ -118,17 +118,25 @@ int pid_out4 = 0;
 double cmdDistanceLeft, cmdDistanceRight, cmdODR, cmdODL = 0;
 double averageLeft, averageRight;
 double r = 0.05; //diameter is 0.1 meters
-double t = 0.001;//1kHz => 1ms for timer7 
-int CMDLD = 1500;
-int CMDRD = 1500;
-int CMDL = 1500;
-int CMDR = 1500;
+double t = 0.1;//1kHz => 1ms for timer7 
+
+int CMDL = 1000;
+int CMDR = 1000;
 //for testing only below
 int count = 0;
 int heart = 0;
+int pause = 101;
+int BACK = 0;
+int FORWARD = 1;
+int STOP= 0;
+int RAMPUP = 0;
+int RAMPDOWN = 0;
+
 #define Set					GPIOD->BSRRL = (1<<15)
 #define Clear				GPIOD->BSRRH = (1<<15)
 
+extern void Move_Backward();
+extern void Move_Forward();
 extern int straight;
 extern void SetLeftFrontWheelPwm(int);
 extern void SetLeftBackWheelPwm(int);
@@ -223,14 +231,117 @@ void SVC_Handler(void)
 void PendSV_Handler(void)
 {}
 
+void Clear_All(void)
+{
+			CMDL=0; CMDR=0;
+			Frequency4 = 0; freq4 = 0;
+			Frequency5 = 0; freq5 = 0;
+			Frequency2 = 0; freq2 = 0;
+			uwTIM1Freq = 0; freq1 = 0;
+			od5 = 0; od4 = 0; od2 = 0; od1 = 1; d1 = 0; d2 = 0; d4 = 0; d5 = 0;
+			cmdODL = 0; cmdODR = 0; cmdDistanceLeft = 0; cmdDistanceRight = 0;
+			averageLeft = 0; averageRight = 0;
+}
+void Clear_CMD_Freq()
+	{
+			CMDL=0; CMDR=0;
+			Frequency4 = 0; freq4 = 0;
+			Frequency5 = 0; freq5 = 0;
+			Frequency2 = 0; freq2 = 0;
+			uwTIM1Freq = 0; freq1 = 0;
+	}
+void Clear_Distance()
+	{
+			od5 = 0; od4 = 0; od2 = 0; od1 = 1; d1 = 0; d2 = 0; d4 = 0; d5 = 0;
+			cmdODL = 0; cmdODR = 0; cmdDistanceLeft = 0; cmdDistanceRight = 0;
+			averageLeft = 0; averageRight = 0;
+	}
+void HeartBeat()
+	{
+		count = count + 1;
+		if(count == 35){
+		count = 0; heart = !heart;
+		}
+		if(heart==1){Set;} 
+		else if(heart==0){Clear;}
+	}
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
-  */
+  */	
 void SysTick_Handler(void)
 {
-TimingDelay_Decrement();
+	TimingDelay_Decrement();
+
+	//Distance Calculations for all Motors
+	cmdDistanceLeft = (2*(3.141592657)*r*CMDL*t)/(48*34); //1632 divide the velocity by 48*34
+	cmdODL = cmdODL + cmdDistanceLeft;
+	cmdDistanceRight = (2*(3.141592657)*r*CMDR*t)/(48*34);
+	cmdODR = cmdODR + cmdDistanceRight;
+
+	d5 = (2*(3.141592657)*r*freq5*t)/(1632);//Front Left
+	od5 = od5 +d5;
+	d1 = (2*(3.141592657)*r*freq1*t)/(1632);//Back Left
+	od1 = od1 +d1;
+	averageLeft = (od5+od1)/2;
+
+	d2 = (2*(3.141592657)*r*freq2*t)/(1632);//Back Right
+	od2 = od2 +d2;
+	d4 = (2*(3.141592657)*r*freq4*t)/(1632);//Front Right
+	od4 = od4 +d4;
+	averageRight = (od4+od2)/2;
+
+	if(FORWARD)
+	{
+	if ((averageLeft>15)&&(averageLeft<15.05))
+		{
+			RAMPDOWN=1;
+		}
+	}
+	pause++;
+	if(pause==20)
+		{
+			FORWARD=0;
+			BACK=1;
+			Clear_All();
+			Move_Backward();
+			RAMPUP=1;
+			CMDL = 1000;
+			CMDR = 1000;
+			Clear_Distance();
+		}
+		if(BACK)
+			{
+				if ((averageLeft>15.5)&&(averageLeft<15.55))
+					{
+						RAMPDOWN = 1;
+						STOP = 1;
+						BACK = 0;
+					}
+			}
+		if(RAMPUP)
+				{
+					CMDL = CMDL + 10;
+					CMDR = CMDR + 10;
+					if(CMDR==1500)
+					{
+						RAMPUP=0;
+					}
+				}
+		if(RAMPDOWN)
+				{
+					CMDL = CMDL - 25;
+					CMDR = CMDR - 25;
+					if(CMDR==0)
+					{
+						Clear_All();
+						RAMPDOWN=0;
+						pause = 0;
+						if(STOP){pause=101;}
+					}
+				}
+	HeartBeat();
 }
 
 /******************************************************************************/
@@ -382,7 +493,7 @@ TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 		if (integral5<0)
 	{integral5 = 0;}
 	diff5 = (error5 - last_error5);//-1050
-	pid_out5 = (((1)*error5)+((0.0001)*integral5) + ((0.0001)*diff5));
+	pid_out5 = (((1.5)*error5)+((0.0005)*integral5) + ((0.0005)*diff5));
 	if (pid_out5>100)
 		{PWM_Out5=100;}
 	else if (pid_out5<0)
@@ -458,61 +569,25 @@ SetRightBackWheelPwm(PWM_Out2);
 	last_error4 = error4;
 SetRightFrontWheelPwm(PWM_Out4);
 		
-		//Distance Calculations for all Motors
-		cmdDistanceLeft = 2*(3.141592657)*r*CMDLD*t;
-		cmdODL = cmdODL + cmdDistanceLeft;
-		cmdDistanceRight = 2*(3.141592657)*r*CMDRD*t;
-		cmdODR = cmdODR + cmdDistanceRight;
-		
-		d5 = 2*(3.141592657)*r*freq5*t;//Front Left
-		od5 = od5 +d5;
-		d1 = 2*(3.141592657)*r*freq1*t;//Back Left
-		od1 = od1 +d1;
-		averageLeft = (od5+od1)/2;
-		
-		d2 = 2*(3.141592657)*r*freq2*t;//Back Right
-		od2 = od2 +d2;
-		d4 = 2*(3.141592657)*r*freq4*t;//Front Right
-		od4 = od4 +d4;
-		averageRight = (od4+od2)/2;
-		
-		//CMD PID:
-		//Left:
-//		if(cmdODL>averageLeft)
-//			{
-//			errorLeft = cmdODL - averageLeft;
-//			CMDL = CMDL+errorLeft;
-//				if(CMDL>3750){CMDL=3750;}
-//				else if(CMDL<0){CMDL = 0;}
-//			}
-//		else if(averageLeft>cmdODL)
-//			{
-//			errorLeft = averageLeft - cmdODL;
-//			CMDL = CMDL-errorLeft;
-//				if(CMDL>3750){CMDL=3750;}
-//				else if(CMDL<0){CMDL = 0;}
-//			}
-//			//Right:
-//		if(cmdODR>averageRight)
-//			{
-//			errorRight = cmdODR - averageRight;
-//			CMDR = CMDR+errorRight;
-//				if(CMDR>3750){CMDR=3750;}
-//				else if(CMDR<0){CMDR = 0;}
-//			}
-//		else if(averageRight>cmdODR)
-//			{
-//			errorRight = averageRight - cmdODR;
-//			CMDR = CMDR-errorRight;
-//				if(CMDR>3750){CMDR=3750;}
-//				else if(CMDR<0){CMDR = 0;}
-//			}
-					count = count + 1;
-		if(count == 1000){
-count = 0; heart = !heart;
-		}
-		if(heart==1){Set;} 
-		else if(heart==0){Clear;}
+//		//Distance Calculations for all Motors
+//		cmdDistanceLeft = 2*(3.141592657)*r*(CMDL/(48*34))*t; //1632 divide the velocity by 48*34
+//		cmdODL = cmdODL + cmdDistanceLeft;
+//		cmdDistanceRight = 2*(3.141592657)*r*(CMDR/(48*34))*t;
+//		cmdODR = cmdODR + cmdDistanceRight;
+//		
+//		d5 = 2*(3.141592657)*r*(freq5/(48*34))*t;//Front Left
+//		od5 = od5 +d5;
+//		d1 = 2*(3.141592657)*r*(freq1/(48*34))*t;//Back Left
+//		od1 = od1 +d1;
+//		averageLeft = (od5+od1)/2;
+//		
+//		d2 = 2*(3.141592657)*r*(freq2/(48*34))*t;//Back Right
+//		od2 = od2 +d2;
+//		d4 = 2*(3.141592657)*r*(freq4/(48*34))*t;//Front Right
+//		od4 = od4 +d4;
+//		averageRight = (od4+od2)/2;
+//		
+//		if(averageLeft>1){GO = 1;}
 	}
 }
 
