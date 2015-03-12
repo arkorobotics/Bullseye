@@ -403,8 +403,8 @@ unsigned char I2cReadMag(unsigned char I2cAddress, unsigned char DeviceID, unsig
 
 unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsigned int Length){
 	__IO uint32_t Timeout = LONGER_TIMEOUT;  
-
-	Timeout = LONGER_TIMEOUT;
+	
+	Timeout = LONG_TIMEOUT;
 	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
 	{
 		if((Timeout--) == 0) 
@@ -413,7 +413,7 @@ unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsig
 
 	I2C_GenerateSTART(I2C1, ENABLE);// Start the config sequence 
 
-	Timeout = LONGER_TIMEOUT;
+	Timeout = LONG_TIMEOUT;
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))// Test on EV5 and clear it 
 	{
 		if((Timeout--) == 0) 
@@ -422,7 +422,7 @@ unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsig
 
 	I2C_Send7bitAddress(I2C1, I2cAddress , I2C_Direction_Receiver);/* Transmit the slave address and enable writing operation */
 
-	Timeout = LONGER_TIMEOUT;
+	Timeout = LONG_TIMEOUT;
 	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))/* Test on EV6 and clear it */
 	{
 		if((Timeout--) == 0) 
@@ -431,10 +431,11 @@ unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsig
 
 	(void)I2C1->SR2;
 
-	Length--;		//needed to receive correct number of bytes
+	//Length--;		//needed to receive correct number of bytes
 	while(Length > 0)
 	{
-		Timeout = LONGER_TIMEOUT;
+		Length--;
+		Timeout = LONG_TIMEOUT;
 		while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED)) /* Test on EV7 and clear it */
 		{
 			if((Timeout--) == 0) 
@@ -445,12 +446,12 @@ unsigned char I2cSonarRead(unsigned char I2cAddress, uint8_t *pData, short unsig
 			I2C_AcknowledgeConfig(I2C1, DISABLE);
 
 		*pData++ = I2C_ReceiveData(I2C1);
-		Length--;
+		//Length--;
 	}
 
 	I2C_GenerateSTOP(I2C1, ENABLE); /* End the configuration sequence */ 
 
-	Timeout = LONGER_TIMEOUT;
+	Timeout = LONG_TIMEOUT;
 	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
 	{
 		if((Timeout--) == 0) 
@@ -480,7 +481,7 @@ void I2CInit(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);     
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9; //9 : SDA

@@ -62,8 +62,9 @@ int main(void)
 	// System Tick Handler configured to 100Hz
 	SysTick_Config(SystemCoreClock/100);
 
-	IMU_Init();
-	Speaker_Config();
+	//IMU_Init();
+	//Speaker_Config();
+	I2CInit();
 	
 	CMD_Left = 0;
 	CMD_Right = 0;
@@ -83,8 +84,8 @@ int main(void)
 			case OBSTACLE_RACE:
 				SetDirection_Forward();
 			
-				CMD_Left = 1500;
-				CMD_Right = 1500;
+				//CMD_Left = 0;
+				//CMD_Right = 0;
 			
 				I2cSonarRead(0x52, sonarBuffer, 2);
 			
@@ -99,7 +100,7 @@ int main(void)
 					CMD_Right = 1500;
 				}
 				
-				Delay(100);
+				Delay(20);
 				
 				break;
 			case MOO:
