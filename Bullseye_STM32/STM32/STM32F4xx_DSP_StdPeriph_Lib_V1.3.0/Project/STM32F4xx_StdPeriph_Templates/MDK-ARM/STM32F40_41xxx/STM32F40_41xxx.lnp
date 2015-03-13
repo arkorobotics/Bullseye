@@ -37,6 +37,8 @@
 ".\stm32f40_41xxx\stm32f4xx_syscfg.o"
 ".\stm32f40_41xxx\main.o"
 ".\stm32f40_41xxx\stm32f4xx_it.o"
+".\stm32f40_41xxx\i2c.o"
+".\stm32f40_41xxx\imu.o"
 --library_type=microlib --strict --scatter ".\STM32F40_41xxx\STM32F40_41xxx.sct"
 
 --diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols

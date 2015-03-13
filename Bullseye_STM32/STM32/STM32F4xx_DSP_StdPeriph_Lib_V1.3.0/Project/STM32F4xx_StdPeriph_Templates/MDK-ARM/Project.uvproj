@@ -783,6 +783,16 @@
               <FileType>1</FileType>
               <FilePath>..\stm32f4xx_it.c</FilePath>
             </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\imu.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1564,6 +1574,16 @@
               <FileType>1</FileType>
               <FilePath>..\stm32f4xx_it.c</FilePath>
             </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\imu.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -2344,6 +2364,16 @@
               <FileName>stm32f4xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\stm32f4xx_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\imu.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3168,6 +3198,16 @@
               <FileName>stm32f4xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\stm32f4xx_it.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\imu.c</FilePath>
             </File>
           </Files>
         </Group>

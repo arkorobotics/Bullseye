@@ -1,6 +1,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include <math.h>
+#include "imu.h"
+#include "i2c.h"
 
 static unsigned char duty = 0;
 static unsigned char rightFrontDuty = 0;
@@ -12,6 +14,7 @@ uint16_t PrescalerValue = 0;
 static __IO uint32_t uwTimingDelay;
 int straight;
 int go = 1;
+double start_heading = 0.0;
 
 void init(void);
 void PreScale_TIME_Init(void);
@@ -277,8 +280,9 @@ TIM_ITConfig(TIM7, TIM_IT_Update, ENABLE);
 TIM_Cmd(TIM7, ENABLE); 
 	}
 int main(void){
-		// System Tick Handler configured to 100Hz
-	SysTick_Config(SystemCoreClock/100);
+		// System Tick Handler configured to 1000Hz
+	IMU_Init();
+	SysTick_Config(SystemCoreClock/1000); 
 Test();
 while(go){
 	if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)==1){
@@ -334,6 +338,7 @@ TIM_Config();
    TIM_ITConfig(TIM5, TIM_IT_CC2, ENABLE);
    TIM_ITConfig(TIM1, TIM_IT_CC2, ENABLE);	 
   while (1){
+		//IMU_Update();
 	}}}
 }
 

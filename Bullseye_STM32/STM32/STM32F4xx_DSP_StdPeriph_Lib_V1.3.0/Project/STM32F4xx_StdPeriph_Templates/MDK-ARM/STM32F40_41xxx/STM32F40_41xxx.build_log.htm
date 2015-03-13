@@ -4,6 +4,102 @@
 <h1>µVision Build Log</h1>
 <h2>Project:</h2>
 C:\Users\Sabrina\ECE_Folders\404_GitHub\Bullseye\Bullseye_STM32\STM32\STM32F4xx_DSP_StdPeriph_Lib_V1.3.0\Project\STM32F4xx_StdPeriph_Templates\MDK-ARM\Project.uvproj
-Project File Date:  03/03/2015
+Project File Date:  03/12/2015
 
 <h2>Output:</h2>
+Build target 'STM32F40_41xxx'
+compiling stm32f4xx_it.c...
+..\stm32f4xx_it.c(152): warning:  #1295-D: Deprecated declaration Move_Backward - give arg types
+  extern void Move_Backward();
+..\stm32f4xx_it.c(153): warning:  #1295-D: Deprecated declaration Move_Forward - give arg types
+  extern void Move_Forward();
+..\stm32f4xx_it.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=14288 RO-data=584 RW-data=620 ZI-data=1196  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 2 Warning(s).
+Load "C:\\Users\\Sabrina\\ECE_Folders\\404_GitHub\\Bullseye\\Bullseye_STM32\\STM32\\STM32F4xx_DSP_StdPeriph_Lib_V1.3.0\\Project\\STM32F4xx_StdPeriph_Templates\\MDK-ARM\\STM32F40_41xxx\\STM32F40_41xxx.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+</pre>
+</body>
+</html>
+.c...
+compiling stm32f4xx_gpio.c...
+compiling stm32f4xx_i2c.c...
+compiling stm32f4xx_rcc.c...
+compiling stm32f4xx_sdio.c...
+compiling stm32f4xx_usart.c...
+compiling stm32f4xx_crc.c...
+compiling stm32f4xx_dma.c...
+compiling stm32f4xx_hash_md5.c...
+compiling stm32f4xx_rtc.c...
+compiling stm32f4xx_cryp_tdes.c...
+compiling stm32f4xx_ltdc.c...
+compiling stm32f4xx_syscfg.c...
+compiling main.c...
+..\main.c(7): warning:  #177-D: variable "duty" was declared but never referenced
+  static unsigned char duty = 0;
+..\main.c(8): warning:  #177-D: variable "rightFrontDuty" was declared but never referenced
+  static unsigned char rightFrontDuty = 0;
+..\main.c(9): warning:  #177-D: variable "rightBackDuty" was declared but never referenced
+  static unsigned char rightBackDuty = 0;
+..\main.c(10): warning:  #177-D: variable "leftFrontDuty" was declared but never referenced
+  static unsigned char leftFrontDuty = 0;
+..\main.c(11): warning:  #177-D: variable "leftBackDuty" was declared but never referenced
+  static unsigned char leftBackDuty = 0;
+..\main.c(12): warning:  #177-D: variable "currDuty" was declared but never referenced
+  static unsigned char currDuty = 0;
+..\main.c(414): warning:  #177-D: function "Delay" was declared but never referenced
+  void Delay(__IO uint32_t nTime){ 
+..\main.c: 7 warnings, 0 errors
+compiling stm32f4xx_it.c...
+..\stm32f4xx_it.c(151): warning:  #1295-D: Deprecated declaration Move_Backward - give arg types
+  extern void Move_Backward();
+..\stm32f4xx_it.c(152): warning:  #1295-D: Deprecated declaration Move_Forward - give arg types
+  extern void Move_Forward();
+..\stm32f4xx_it.c: 2 warnings, 0 errors
+compiling i2c.c...
+compiling imu.c...
+linking...
+Program Size: Code=12436 RO-data=424 RW-data=612 ZI-data=1196  
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 0 Error(s), 9 Warning(s).
+Load "C:\\Users\\Sabrina\\ECE_Folders\\404_GitHub\\Bullseye\\Bullseye_STM32\\STM32\\STM32F4xx_DSP_StdPeriph_Lib_V1.3.0\\Project\\STM32F4xx_StdPeriph_Templates\\MDK-ARM\\STM32F40_41xxx\\STM32F40_41xxx.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+): error:  #77-D: this declaration has no storage class or type specifier
+        pid_out5 = (((1.5)*error5)+((0.0005)*integral5) + ((0.0005)*diff5));
+..\stm32f4xx_it.c(545): error:  #148: variable "pid_out5" has already been initialized
+        pid_out5 = (((1.5)*error5)+((0.0005)*integral5) + ((0.0005)*diff5));
+..\stm32f4xx_it.c(545): error:  #28: expression must have a constant value
+        pid_out5 = (((1.5)*error5)+((0.0005)*integral5) + ((0.0005)*diff5));
+..\stm32f4xx_it.c(545): error:  #28: expression must have a constant value
+        pid_out5 = (((1.5)*error5)+((0.0005)*integral5) + ((0.0005)*diff5));
+..\stm32f4xx_it.c(545): error:  #28: expression must have a constant value
+        pid_out5 = (((1.5)*error5)+((0.0005)*integral5) + ((0.0005)*diff5));
+..\stm32f4xx_it.c(546): error:  #169: expected a declaration
+        if (pid_out5>100)
+..\stm32f4xx_it.c(551): warning:  #12-D: parsing restarts here after previous syntax error
+        last_error5 = error5;
+..\stm32f4xx_it.c(552): error:  #260-D: explicit type is missing ("int" assumed)
+  SetLeftFrontWheelPwm(PWM_Out5);
+..\stm32f4xx_it.c(552): error:  #92: identifier-list parameters may only be used in a function definition
+  SetLeftFrontWheelPwm(PWM_Out5);
+..\stm32f4xx_it.c(552): error:  #147: declaration is incompatible with "void SetLeftFrontWheelPwm(int)" (declared at line 156)
+  SetLeftFrontWheelPwm(PWM_Out5);
+..\stm32f4xx_it.c(556): error:  #169: expected a declaration
+    if(uwTIM1Freq>3750)
+..\stm32f4xx_it.c(560): warning:  #12-D: parsing restarts here after previous syntax error
+        error1 = CMDL - freq1; //-1050
+..\stm32f4xx_it.c(561): error:  #77-D: this declaration has no storage class or type specifier
+        integral1 = integral1 + error1;//-1050
+..\stm32f4xx_it.c(561): error:  #148: variable "integral1" has already been initialized
+        integral1 = integral1 + error1;//-1050
+..\stm32f4xx_it.c(561): error:  #28: expression must have a constant value
+        integral1 = integral1 + error1;//-1050
+..\stm32f4xx_it.c(561): error:  #28: expression must have a constant value
+        integral1 = integral1 + error1;//-1050
+..\stm32f4xx_it.c: 10 warnings, 30 errors
+".\STM32F40_41xxx\STM32F40_41xxx.axf" - 30 Error(s), 10 Warning(s).
+Target not created
