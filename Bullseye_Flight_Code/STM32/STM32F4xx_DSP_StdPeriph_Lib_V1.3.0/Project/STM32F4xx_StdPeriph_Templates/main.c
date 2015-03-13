@@ -30,6 +30,7 @@
 #include "drive.h"
 #include "imu.h"
 #include "i2c.h"
+#include "sonar.h"
 #include "speaker.h"
 
 #include <math.h>
@@ -40,7 +41,6 @@ static __IO uint32_t uwTimingDelay;
 static void Delay(__IO uint32_t nTime);
 void TimingDelay_Decrement(void);
 
-uint8_t sonarBuffer[2];
 
 typedef enum { TUG_OF_WAR, RELAY_RACE, OBSTACLE_RACE, MOO, ROUND_UP, WAYPOINT } state_mode;
 
@@ -62,12 +62,18 @@ int main(void)
 	// System Tick Handler configured to 100Hz
 	SysTick_Config(SystemCoreClock/100);
 
-	//IMU_Init();
-	//Speaker_Config();
 	I2CInit();
-	
+
+	IMU_Init();
+	Speaker_Config();
+
+	// Initialize target motor speed to 0
 	CMD_Left = 0;
 	CMD_Right = 0;
+
+	// Initialize sonar buffer to smallest possible reading
+	sonarBuffer[0] = 1;
+	sonarBuffer[1] = 1;
 
 	while (1)
 	{
@@ -83,11 +89,6 @@ int main(void)
 				break;
 			case OBSTACLE_RACE:
 				SetDirection_Forward();
-			
-				//CMD_Left = 0;
-				//CMD_Right = 0;
-			
-				I2cSonarRead(0x52, sonarBuffer, 2);
 			
 				if(sonarBuffer[0] < 100)
 				{

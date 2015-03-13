@@ -85,7 +85,7 @@ void initAK8975A(double *destination)
 void IMU_Init(void)
 {
 	/* Insert 50 ms delay Delay(5)*/
-	I2CInit();
+	// I2CInit(); // Removed because it is called in main.c
 
 	//Configuration
 	I2cWriteConfig(0xD0, 0x6B, 0x01);

@@ -807,6 +807,11 @@
               <FileType>1</FileType>
               <FilePath>..\drive.c</FilePath>
             </File>
+            <File>
+              <FileName>sonar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sonar.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1612,6 +1617,11 @@
               <FileType>1</FileType>
               <FilePath>..\drive.c</FilePath>
             </File>
+            <File>
+              <FileName>sonar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sonar.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -2416,6 +2426,11 @@
               <FileName>drive.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\drive.c</FilePath>
+            </File>
+            <File>
+              <FileName>sonar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sonar.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3264,6 +3279,11 @@
               <FileName>drive.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\drive.c</FilePath>
+            </File>
+            <File>
+              <FileName>sonar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\sonar.c</FilePath>
             </File>
           </Files>
         </Group>

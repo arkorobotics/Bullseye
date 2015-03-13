@@ -13,6 +13,8 @@
 
 #include "stm32f4xx_it.h"
 #include "imu.h"
+#include "sonar.h"
+#include "i2c.h"
 #include "speaker.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -117,7 +119,7 @@ double AverageDistance_Right = 0;
 double AverageDistanceTravelled = 0;
 
 double r = 0.05; 					// Wheel radius: 0.1 meters
-double dt = 0.001;					// dt: 1kHz => 1ms for timer7
+double dt = 0.01;					// dt: 1kHz => 1ms for timer7
 
 int heart_count = 0;
 int heart_led = 0;
@@ -129,6 +131,13 @@ extern void SetLeftFrontWheelPwm(int);
 extern void SetLeftBackWheelPwm(int);
 extern void SetRightFrontWheelPwm(int);
 extern void SetRightBackWheelPwm(int);
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Sonar - Variables
+/////////////////////////////////////////////////////////////////////////////
+int sonar_read_delay = 10;
+int sonar_read_count = 0;
 
 void TimingDelay_Decrement(void);
 
@@ -470,49 +479,6 @@ void TIM7_IRQHandler(void)
 		Last_RightBack_Error = RightBack_Error;
 		SetRightBackWheelPwm(RightBack_PWM);
 
-
-		/////////////////////////////////////////////////////////////////////////////
-		// Odometry
-		/////////////////////////////////////////////////////////////////////////////
-		//Distance Calculations for all Motors
-		// Note: 1632 divide the velocity by 48*34
-		CMD_DistanceLeft = 2*(3.141592657)*r*(CMD_Left/(48*34))*dt; 
-		CMD_ODL = CMD_ODL + CMD_DistanceLeft;
-		CMD_DistanceRight = 2*(3.141592657)*r*(CMD_Right/(48*34))*dt;
-		CMD_ODR = CMD_ODR + CMD_DistanceRight;
-		
-		LF_DeltaDistance = 2*(3.141592657)*r*(LeftFront_Frequency/(48*34))*dt;		//Left Front
-		LF_Distance = LF_Distance + LF_DeltaDistance;
-		RF_DeltaDistance = 2*(3.141592657)*r*(LeftBack_Frequency/(48*34))*dt;		//Left Back
-		RF_Distance = RF_Distance + RF_DeltaDistance;
-		AverageDistance_Left = (LF_Distance + RF_Distance)/2;
-		
-		LB_DeltaDistance = 2*(3.141592657)*r*(RightFront_Frequency/(48*34))*dt;		//Right Front
-		LB_Distance = LB_Distance + LB_DeltaDistance;
-		RB_DeltaDistance = 2*(3.141592657)*r*(RightBack_Frequency/(48*34))*dt;		//Right Back
-		RB_Distance = RB_Distance + RB_DeltaDistance;
-		AverageDistance_Right = (LB_Distance + RB_Distance)/2;
-
-		AverageDistanceTravelled = (AverageDistance_Left + AverageDistance_Right)/2;
-
-
-		/////////////////////////////////////////////////////////////////////////////
-		// Heartbeat
-		/////////////////////////////////////////////////////////////////////////////
-		heart_count = heart_count + 1;
-		if(heart_count == 1000)
-		{
-			heart_count = 0; 
-			heart_led = !heart_led;
-		}
-		if(heart_led==1)
-		{
-			Set_LED;
-		} 
-		else if(heart_led==0)
-		{
-			Clear_LED;
-		}
 	}
 }
 
@@ -611,9 +577,70 @@ void SysTick_Handler(void)
 	// System Tick Handler fires at 100Hz
 	TimingDelay_Decrement();
 	
+
+	/////////////////////////////////////////////////////////////////////////////
 	// Update IMU Accel, Gyro, Mag values
+	/////////////////////////////////////////////////////////////////////////////
 	IMU_Update();
-	heading = heading + gyro[2]*(0.01);
+	heading = heading + gyro[2]*dt;
+
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Update Sonar
+	/////////////////////////////////////////////////////////////////////////////
+	if(sonar_read_count < sonar_read_delay)
+	{
+		sonar_read_count++;
+	}
+	else
+	{
+		I2cSonarRead(0x52, sonarBuffer, 2);
+		sonar_read_count = 0;
+	}
+	
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Odometry
+	/////////////////////////////////////////////////////////////////////////////
+	//Distance Calculations for all Motors
+	// Note: 1632 divide the velocity by 48*34
+	CMD_DistanceLeft = 2*(3.141592657)*r*(CMD_Left/(48*34))*dt; 
+	CMD_ODL = CMD_ODL + CMD_DistanceLeft;
+	CMD_DistanceRight = 2*(3.141592657)*r*(CMD_Right/(48*34))*dt;
+	CMD_ODR = CMD_ODR + CMD_DistanceRight;
+	
+	LF_DeltaDistance = 2*(3.141592657)*r*(LeftFront_Frequency/(48*34))*dt;		//Left Front
+	LF_Distance = LF_Distance + LF_DeltaDistance;
+	RF_DeltaDistance = 2*(3.141592657)*r*(LeftBack_Frequency/(48*34))*dt;		//Left Back
+	RF_Distance = RF_Distance + RF_DeltaDistance;
+	AverageDistance_Left = (LF_Distance + RF_Distance)/2;
+	
+	LB_DeltaDistance = 2*(3.141592657)*r*(RightFront_Frequency/(48*34))*dt;		//Right Front
+	LB_Distance = LB_Distance + LB_DeltaDistance;
+	RB_DeltaDistance = 2*(3.141592657)*r*(RightBack_Frequency/(48*34))*dt;		//Right Back
+	RB_Distance = RB_Distance + RB_DeltaDistance;
+	AverageDistance_Right = (LB_Distance + RB_Distance)/2;
+
+	AverageDistanceTravelled = (AverageDistance_Left + AverageDistance_Right)/2;
+
+
+	/////////////////////////////////////////////////////////////////////////////
+	// Heartbeat
+	/////////////////////////////////////////////////////////////////////////////
+	heart_count = heart_count + 1;
+	if(heart_count == 1000)
+	{
+		heart_count = 0; 
+		heart_led = !heart_led;
+	}
+	if(heart_led==1)
+	{
+		Set_LED;
+	} 
+	else if(heart_led==0)
+	{
+		Clear_LED;
+	}
 	
 }
 
