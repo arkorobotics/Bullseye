@@ -29,8 +29,11 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	Timeout = LONG_TIMEOUT;
 	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
 	{
-		if((Timeout--) == 0) 
+		if((Timeout--) == 0)
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	I2C_GenerateSTART(I2C1, ENABLE);// Start the config sequence 
@@ -39,7 +42,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))// Test on EV5 and clear it 
 	{
 		if((Timeout--) == 0) 
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	I2C_Send7bitAddress(I2C1, I2cAddress, I2C_Direction_Transmitter); //chaeckthis
@@ -48,7 +54,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))/* Test on EV6 and clear it */
 	{
 		if((Timeout--) == 0) 
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	I2C_SendData(I2C1, Register); //checkthis
@@ -57,7 +66,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_TRANSMITTED))/* Test on EV8_2 and clear it */
 	{
 		if((Timeout--) == 0) 
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	I2C_GenerateSTART(I2C1, ENABLE); /* Start the config sequence */
@@ -67,7 +79,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_MODE_SELECT))
 	{
 		if((Timeout--) == 0) 
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	I2C_Send7bitAddress(I2C1, I2cAddress , I2C_Direction_Receiver);/* Transmit the slave address and enable writing operation */
@@ -76,7 +91,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	while(!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))/* Test on EV6 and clear it */
 	{
 		if((Timeout--) == 0) 
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	(void)I2C1->SR2;
@@ -87,7 +105,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 		while (!I2C_CheckEvent(I2C1, I2C_EVENT_MASTER_BYTE_RECEIVED)) /* Test on EV7 and clear it */
 		{
 			if((Timeout--) == 0) 
+			{ 
+				I2CInit();
 				return 1;
+			}
 		}	
 
 		if(Length == 1)
@@ -103,7 +124,10 @@ unsigned char I2cRead(unsigned char I2cAddress, unsigned char Register, uint8_t 
 	while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY)) /*!< While the bus is busy */
 	{
 		if((Timeout--) == 0) 
+		{ 
+			I2CInit();
 			return 1;
+		}
 	}
 
 	I2C_AcknowledgeConfig(I2C1, ENABLE);

@@ -59,6 +59,8 @@ double mag[3] = {0.000, 0.000, 0.000};
 
 double heading = 0.000;
 
+double gyro_z_cal = 0.000;
+
 int magstart[3] = {-5,-95,-260};
 
 double magCal[3] = {0.000, 0.000, 0.000};
@@ -128,4 +130,21 @@ void IMU_Update(void)
 	MAGZ = ((int16_t)mag8[4] << 8) | mag8[5];
 	mag[2] = ((double)MAGZ)*(3.00049)*(magCal[2]) - magstart[2];
 	I2cWriteConfig(0x18, 0x0A, 0x01); 
+}
+
+void CalibrateIMU(void)
+{
+	int i = 0;
+	for(i = 0; i < 20; i++)
+	{
+		IMU_Update();
+		gyro_z_cal = (gyro_z_cal + gyro[2])/2;
+
+		//Delay between samples
+		static int delaytime = 0xFFFF;
+		while(delaytime)
+		{
+			delaytime--;
+		}
+	}
 }

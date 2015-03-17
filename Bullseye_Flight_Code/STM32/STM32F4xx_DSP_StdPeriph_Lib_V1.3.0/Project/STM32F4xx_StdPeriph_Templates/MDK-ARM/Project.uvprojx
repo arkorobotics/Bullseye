@@ -812,6 +812,11 @@
               <FileType>1</FileType>
               <FilePath>..\sonar.c</FilePath>
             </File>
+            <File>
+              <FileName>run.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\run.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -1622,6 +1627,11 @@
               <FileType>1</FileType>
               <FilePath>..\sonar.c</FilePath>
             </File>
+            <File>
+              <FileName>run.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\run.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
@@ -2431,6 +2441,11 @@
               <FileName>sonar.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sonar.c</FilePath>
+            </File>
+            <File>
+              <FileName>run.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\run.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3284,6 +3299,11 @@
               <FileName>sonar.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\sonar.c</FilePath>
+            </File>
+            <File>
+              <FileName>run.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\run.c</FilePath>
             </File>
           </Files>
         </Group>

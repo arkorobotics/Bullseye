@@ -22,8 +22,13 @@ extern uint32_t RightBack_Frequency_Raw;
 extern int CMD_Left;
 extern int CMD_Right;
 
+extern int CMD_Left_Target;
+extern int CMD_Right_Target;
+
 extern double CMD_Distance;
 extern double AverageDistanceTravelled;
+
+extern uint8_t run;
 
 #define Set_IN1_Left				GPIOE->BSRRL = (1<<2)
 #define Clear_IN1_Left				GPIOE->BSRRH = (1<<2)

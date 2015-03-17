@@ -40,5 +40,6 @@
 .\stm32f40_41xxx\main.o: ..\sonar.h
 .\stm32f40_41xxx\main.o: ..\speaker.h
 .\stm32f40_41xxx\main.o: ..\stm32f4xx_it.h
+.\stm32f40_41xxx\main.o: ..\run.h
 .\stm32f40_41xxx\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\stm32f40_41xxx\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

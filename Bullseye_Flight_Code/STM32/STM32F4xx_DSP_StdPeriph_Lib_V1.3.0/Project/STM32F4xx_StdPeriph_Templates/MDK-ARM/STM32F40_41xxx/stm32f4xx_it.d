@@ -39,3 +39,4 @@
 .\stm32f40_41xxx\stm32f4xx_it.o: ..\sonar.h
 .\stm32f40_41xxx\stm32f4xx_it.o: ..\i2c.h
 .\stm32f40_41xxx\stm32f4xx_it.o: ..\speaker.h
+.\stm32f40_41xxx\stm32f4xx_it.o: ..\run.h

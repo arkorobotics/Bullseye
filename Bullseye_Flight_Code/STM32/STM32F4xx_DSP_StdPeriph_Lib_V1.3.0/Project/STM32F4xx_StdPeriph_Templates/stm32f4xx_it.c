@@ -16,6 +16,20 @@
 #include "sonar.h"
 #include "i2c.h"
 #include "speaker.h"
+#include "run.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// Theta - Variables
+/////////////////////////////////////////////////////////////////////////////
+double Theta_Kp = 10.000;
+double Theta_Ki = 0.01;
+double Theta_Kd = 0.000;
+double Theta_Error = 0;
+double Theta_Integral = 0;
+double Theta_Diff = 0;
+double Theta_PID = 0;
+double Last_Theta_Error = 0;
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Left Front Wheel - Variables
@@ -95,8 +109,13 @@ uint32_t RightBack_Frequency;
 /////////////////////////////////////////////////////////////////////////////
 // Wheel - Variables
 /////////////////////////////////////////////////////////////////////////////
-int CMD_Left = 1500;
-int CMD_Right = 1500;
+int CMD_Left = 0;
+int CMD_Right = 0;
+
+int CMD_Left_Target = 0;
+int CMD_Right_Target = 0;
+
+double CMD_Theta = 0.000;
 
 double CMD_Distance = 0;
 
@@ -119,7 +138,7 @@ double AverageDistance_Right = 0;
 double AverageDistanceTravelled = 0;
 
 double r = 0.05; 					// Wheel radius: 0.1 meters
-double dt = 0.01;					// dt: 1kHz => 1ms for timer7
+double dt = 0.1;					// dt: 1kHz => 1ms for timer7
 
 int heart_count = 0;
 int heart_led = 0;
@@ -136,8 +155,14 @@ extern void SetRightBackWheelPwm(int);
 /////////////////////////////////////////////////////////////////////////////
 // Sonar - Variables
 /////////////////////////////////////////////////////////////////////////////
-int sonar_read_delay = 10;
+int sonar_read_delay = 20;
 int sonar_read_count = 0;
+
+/////////////////////////////////////////////////////////////////////////////
+// IMU - Variables
+/////////////////////////////////////////////////////////////////////////////
+int imu_read_delay = 10;
+int imu_read_count = 0;
 
 void TimingDelay_Decrement(void);
 
@@ -302,6 +327,15 @@ void TIM7_IRQHandler(void)
 	{
 		TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
 
+		Theta_Error = CMD_Theta - heading;
+		Theta_Integral = Theta_Integral + Theta_Error;
+		Theta_Diff = Theta_Error - Last_Theta_Error;
+		Theta_PID = (Theta_Kp * Theta_Error) + (Theta_Ki * Theta_Integral) + (Theta_Kd * Theta_Diff);
+
+		if(run == 0)
+		{
+			Theta_PID = 0;
+		}
 
 		/////////////////////////////////////////////////////////////////////////////
 		// Left Front Wheel - PID
@@ -315,7 +349,7 @@ void TIM7_IRQHandler(void)
 			LeftFront_Frequency = LeftFront_Frequency_Raw;
 		}
 
-		LeftFront_Error = CMD_Left - LeftFront_Frequency;
+		LeftFront_Error = CMD_Left - LeftFront_Frequency - (signed int)(Theta_PID);
 		LeftFront_Integral = LeftFront_Integral + LeftFront_Error;
 		
 		if (LeftFront_Integral > 3750)
@@ -360,7 +394,7 @@ void TIM7_IRQHandler(void)
 			LeftBack_Frequency = LeftBack_Frequency_Raw;
 		}
 
-		LeftBack_Error = CMD_Left - LeftBack_Frequency;
+		LeftBack_Error = CMD_Left - LeftBack_Frequency - (signed int)(Theta_PID);
 		LeftBack_Integral = LeftBack_Integral + LeftBack_Error;
 
 		if (LeftBack_Integral > 3750)
@@ -404,7 +438,7 @@ void TIM7_IRQHandler(void)
 			RightFront_Frequency = RightFront_Frequency_Raw;
 		}
 
-		RightFront_Error = CMD_Right - RightFront_Frequency;
+		RightFront_Error = CMD_Right - RightFront_Frequency + (signed int)(Theta_PID);
 		RightFront_Integral = RightFront_Integral + RightFront_Error;
 		
 		if (RightFront_Integral > 3750)
@@ -448,7 +482,7 @@ void TIM7_IRQHandler(void)
 			RightBack_Frequency = RightBack_Frequency_Raw;
 		}
 
-		RightBack_Error = CMD_Right - RightBack_Frequency;
+		RightBack_Error = CMD_Right - RightBack_Frequency + (signed int)(Theta_PID);
 		RightBack_Integral = RightBack_Integral + RightBack_Error;
 		
 		if (RightBack_Integral > 3750)
@@ -479,6 +513,24 @@ void TIM7_IRQHandler(void)
 		Last_RightBack_Error = RightBack_Error;
 		SetRightBackWheelPwm(RightBack_PWM);
 
+		/////////////////////////////////////////////////////////////////////////////
+		// Odometry
+		/////////////////////////////////////////////////////////////////////////////
+		//Distance Calculations for all Motors
+		// Note: 1632 divide the velocity by 48*34	
+		LF_DeltaDistance = 2*(3.141592657)*r*(LeftFront_Frequency/(48*34))*dt;		//Left Front
+		LF_Distance = LF_Distance + LF_DeltaDistance;
+		RF_DeltaDistance = 2*(3.141592657)*r*(LeftBack_Frequency/(48*34))*dt;		//Left Back
+		RF_Distance = RF_Distance + RF_DeltaDistance;
+		AverageDistance_Left = (LF_Distance + RF_Distance)/2;
+		
+		LB_DeltaDistance = 2*(3.141592657)*r*(RightFront_Frequency/(48*34))*dt;		//Right Front
+		LB_Distance = LB_Distance + LB_DeltaDistance;
+		RB_DeltaDistance = 2*(3.141592657)*r*(RightBack_Frequency/(48*34))*dt;		//Right Back
+		RB_Distance = RB_Distance + RB_DeltaDistance;
+		AverageDistance_Right = (LB_Distance + RB_Distance)/2;
+
+		AverageDistanceTravelled = (AverageDistance_Left + AverageDistance_Right)/2;
 	}
 }
 
@@ -581,8 +633,16 @@ void SysTick_Handler(void)
 	/////////////////////////////////////////////////////////////////////////////
 	// Update IMU Accel, Gyro, Mag values
 	/////////////////////////////////////////////////////////////////////////////
-	IMU_Update();
-	heading = heading + gyro[2]*dt;
+	if(imu_read_count < imu_read_delay)
+	{
+		imu_read_count++;
+	}
+	else
+	{
+		IMU_Update();
+		heading = heading + (gyro[2] - gyro_z_cal)*dt;
+		imu_read_count = 0;
+	}
 
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -598,31 +658,6 @@ void SysTick_Handler(void)
 		sonar_read_count = 0;
 	}
 	
-
-	/////////////////////////////////////////////////////////////////////////////
-	// Odometry
-	/////////////////////////////////////////////////////////////////////////////
-	//Distance Calculations for all Motors
-	// Note: 1632 divide the velocity by 48*34
-	CMD_DistanceLeft = 2*(3.141592657)*r*(CMD_Left/(48*34))*dt; 
-	CMD_ODL = CMD_ODL + CMD_DistanceLeft;
-	CMD_DistanceRight = 2*(3.141592657)*r*(CMD_Right/(48*34))*dt;
-	CMD_ODR = CMD_ODR + CMD_DistanceRight;
-	
-	LF_DeltaDistance = 2*(3.141592657)*r*(LeftFront_Frequency/(48*34))*dt;		//Left Front
-	LF_Distance = LF_Distance + LF_DeltaDistance;
-	RF_DeltaDistance = 2*(3.141592657)*r*(LeftBack_Frequency/(48*34))*dt;		//Left Back
-	RF_Distance = RF_Distance + RF_DeltaDistance;
-	AverageDistance_Left = (LF_Distance + RF_Distance)/2;
-	
-	LB_DeltaDistance = 2*(3.141592657)*r*(RightFront_Frequency/(48*34))*dt;		//Right Front
-	LB_Distance = LB_Distance + LB_DeltaDistance;
-	RB_DeltaDistance = 2*(3.141592657)*r*(RightBack_Frequency/(48*34))*dt;		//Right Back
-	RB_Distance = RB_Distance + RB_DeltaDistance;
-	AverageDistance_Right = (LB_Distance + RB_Distance)/2;
-
-	AverageDistanceTravelled = (AverageDistance_Left + AverageDistance_Right)/2;
-
 
 	/////////////////////////////////////////////////////////////////////////////
 	// Heartbeat
