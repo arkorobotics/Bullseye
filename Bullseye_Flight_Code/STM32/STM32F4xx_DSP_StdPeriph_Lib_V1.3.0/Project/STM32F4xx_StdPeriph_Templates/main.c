@@ -44,14 +44,15 @@ void TimingDelay_Decrement(void);
 
 
 uint8_t run = 0;
-
+uint8_t gyro_enable = 0; 
+uint8_t flip_status = 0;
 
 typedef enum { TUG_OF_WAR, RELAY_RACE, OBSTACLE_RACE, MOO, ROUND_UP, WAYPOINT } state_mode;
 
 /////////////////////////////////////////////////////////////////////////////
 // CURRENT MODE
 /////////////////////////////////////////////////////////////////////////////
-state_mode current_state = OBSTACLE_RACE;
+state_mode current_state = RELAY_RACE;
 /////////////////////////////////////////////////////////////////////////////
 
 int main(void)
@@ -91,6 +92,7 @@ int main(void)
 		if(GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) == 1)
 		{
 			run = 1;
+			gyro_enable = 1;
 		}
 	}
 
@@ -104,11 +106,74 @@ int main(void)
 				Delay(10);
 				break;
 			case RELAY_RACE:
-
+				
+				
+				if(flip_status == 0)
+				{
+					if(0.0 <= AverageDistance_Left && AverageDistance_Left < 10.0)
+					{
+						SetDirection_Forward();
+						SetLeftFrontWheelPwm(60);
+						SetLeftBackWheelPwm(60);
+						SetRightFrontWheelPwm(60);
+						SetRightBackWheelPwm(60);
+						CMD_Left = 2400;
+						CMD_Right = 2400;
+						CMD_Theta = 0.00;
+					}					
+					else if(10.0 <= AverageDistance_Left && AverageDistance_Left < 60.0)
+					{
+						SetDirection_Forward();
+						CMD_Left = 1510;
+						CMD_Right = 1500;
+						//gyro_enable = 1;
+						CMD_Theta = 0.00;
+					}
+					else if(60.0 <= AverageDistance_Left && AverageDistance_Left < 120.0)
+					{
+						//gyro_enable = 0;
+						CMD_Theta = 0.00;
+					}
+					else if(120.0 <= AverageDistance_Left && AverageDistance_Left < 435.0)
+					{
+						//gyro_enable = 1;
+						CMD_Theta = 0.50; 
+					}
+					else if(435.0 <= AverageDistance_Left)
+					{
+						//gyro_enable = 1;
+						CMD_Left = 0;
+						CMD_Right = 0;
+						SetDirection_Backward();
+						Delay(20);					
+						CMD_Left = 1510;
+						CMD_Right = 1500;
+						CMD_Theta = 0.00; 
+						flip_status = 1;
+					}
+				}
+				else if(flip_status == 1)
+				{
+					if(AverageDistance_Left < 1200.0)
+					{
+						//gyro_enable = 1;
+						SetDirection_Backward();
+						CMD_Theta = 1.00; 
+					}
+					else if(1200.0 <= AverageDistance_Left)
+					{
+						//gyro_enable = 1;
+						SetDirection_Forward();
+						CMD_Left = 0;
+						CMD_Right = 0;
+						CMD_Theta = 1.00; 
+					}
+				}
+				
 				break;
 			case OBSTACLE_RACE:
 				SetDirection_Forward();
-				
+				/*
 				if(sonarBuffer[0] < 100)
 				{
 					CMD_Left = 1500*(sonarBuffer[0]/100);
@@ -119,8 +184,7 @@ int main(void)
 					CMD_Left = 1500;
 					CMD_Right = 1500;
 				}
-				
-				Delay(20);
+				*/
 				break;
 			case MOO:
 				Moo();

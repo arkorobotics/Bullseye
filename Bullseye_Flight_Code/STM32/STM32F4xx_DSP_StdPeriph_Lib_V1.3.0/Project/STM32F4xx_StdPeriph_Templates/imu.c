@@ -135,13 +135,13 @@ void IMU_Update(void)
 void CalibrateIMU(void)
 {
 	int i = 0;
-	for(i = 0; i < 20; i++)
+	for(i = 0; i < 40; i++)
 	{
 		IMU_Update();
 		gyro_z_cal = (gyro_z_cal + gyro[2])/2;
 
 		//Delay between samples
-		static int delaytime = 0xFFFF;
+		static uint32_t delaytime = 840000;
 		while(delaytime)
 		{
 			delaytime--;

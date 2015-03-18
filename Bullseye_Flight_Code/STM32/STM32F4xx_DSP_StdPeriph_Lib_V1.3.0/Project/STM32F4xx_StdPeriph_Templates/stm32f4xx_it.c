@@ -21,8 +21,8 @@
 /////////////////////////////////////////////////////////////////////////////
 // Theta - Variables
 /////////////////////////////////////////////////////////////////////////////
-double Theta_Kp = 10.000;
-double Theta_Ki = 0.01;
+double Theta_Kp = 50.000;
+double Theta_Ki = 0.0001;
 double Theta_Kd = 0.000;
 double Theta_Error = 0;
 double Theta_Integral = 0;
@@ -116,6 +116,8 @@ int CMD_Left_Target = 0;
 int CMD_Right_Target = 0;
 
 double CMD_Theta = 0.000;
+
+double direction_sign = 1;
 
 double CMD_Distance = 0;
 
@@ -335,7 +337,16 @@ void TIM7_IRQHandler(void)
 		if(run == 0)
 		{
 			Theta_PID = 0;
+			Theta_Integral = 0;
 		}
+		
+		if(gyro_enable == 0)
+		{
+			Theta_PID = 0;
+			Theta_Integral = 0;			
+		}
+		
+		Theta_PID = direction_sign*Theta_PID;
 
 		/////////////////////////////////////////////////////////////////////////////
 		// Left Front Wheel - PID

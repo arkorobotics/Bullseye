@@ -25,8 +25,15 @@ extern int CMD_Right;
 extern int CMD_Left_Target;
 extern int CMD_Right_Target;
 
+extern double AverageDistance_Left;
+extern double AverageDistance_Right;
+
+extern double CMD_Theta;
+
 extern double CMD_Distance;
 extern double AverageDistanceTravelled;
+
+extern double direction_sign;
 
 extern uint8_t run;
 

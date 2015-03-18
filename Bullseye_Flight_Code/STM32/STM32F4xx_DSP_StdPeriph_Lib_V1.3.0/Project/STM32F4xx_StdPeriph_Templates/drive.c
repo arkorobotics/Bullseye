@@ -315,6 +315,8 @@ void SetDirection_Forward(void)
 	//IN2 must be a logic low
 	Clear_IN2_Left;
 	Clear_IN2_Right;
+	
+	direction_sign = 1;
 }
 
 void SetDirection_Backward(void)
@@ -326,6 +328,8 @@ void SetDirection_Backward(void)
 	//IN2 must be a logic high
 	Set_IN2_Left;
 	Set_IN2_Right;
+	
+	direction_sign = -1;
 }
 
 void SetRotation_Left(void)
