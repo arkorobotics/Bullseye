@@ -13,6 +13,8 @@
 #include "stm32f4xx.h"
 #include "run.h"
 
+uint32_t rodeo_count = 0;
+
 void RunSwitchInit(void)
 {
 	GPIO_InitTypeDef  GPIO_InitStruct;

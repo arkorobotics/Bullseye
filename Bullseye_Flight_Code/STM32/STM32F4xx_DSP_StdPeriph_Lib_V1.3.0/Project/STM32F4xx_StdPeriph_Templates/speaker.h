@@ -7,9 +7,9 @@
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
-extern int moo_count;
 extern __IO uint8_t ubSelectedWavesForm, ubKeyPressed;
 extern uint16_t aSine12bit[32];
+extern uint8_t obstacle_front_flag;
 
 /* Exported macro ------------------------------------------------------------*/
 #if defined (USE_STM324xG_EVAL)
@@ -28,7 +28,8 @@ void Speaker_Config(void);
 static void SpeakerGPIO_Config(void);
 static void TIM6_Config(void);
 static void DAC_Ch2_SineWaveConfig(void);
-void Moo(void);
+void Moo_ON(void);
+void Moo_OFF(void);
 
 #endif /* SPEAKER_H */
 

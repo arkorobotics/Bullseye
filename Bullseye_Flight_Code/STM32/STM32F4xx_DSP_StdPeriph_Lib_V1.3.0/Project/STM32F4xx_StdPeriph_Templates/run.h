@@ -7,6 +7,8 @@
 
 extern uint8_t run;
 extern uint8_t gyro_enable;
+extern uint32_t rodeo_count;
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

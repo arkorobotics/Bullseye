@@ -828,6 +828,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>CMD_Theta</ItemText>
         </Ww>
+        <Ww>
+          <count>26</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>aSine12bit</ItemText>
+        </Ww>
+        <Ww>
+          <count>27</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>run,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -949,6 +959,26 @@
           <count>23</count>
           <WinNumber>2</WinNumber>
           <ItemText>Timeout</ItemText>
+        </Ww>
+        <Ww>
+          <count>24</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>moo_count</ItemText>
+        </Ww>
+        <Ww>
+          <count>25</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>moo_count</ItemText>
+        </Ww>
+        <Ww>
+          <count>26</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>moo_count</ItemText>
+        </Ww>
+        <Ww>
+          <count>27</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>rodeo_count,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

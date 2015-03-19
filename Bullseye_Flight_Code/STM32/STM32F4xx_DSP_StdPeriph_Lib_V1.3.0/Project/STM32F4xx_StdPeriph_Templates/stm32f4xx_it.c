@@ -640,7 +640,11 @@ void SysTick_Handler(void)
 	// System Tick Handler fires at 100Hz
 	TimingDelay_Decrement();
 	
-
+	if(run == 1)	
+	{
+		rodeo_count++;
+	}
+	
 	/////////////////////////////////////////////////////////////////////////////
 	// Update IMU Accel, Gyro, Mag values
 	/////////////////////////////////////////////////////////////////////////////
@@ -674,7 +678,7 @@ void SysTick_Handler(void)
 	// Heartbeat
 	/////////////////////////////////////////////////////////////////////////////
 	heart_count = heart_count + 1;
-	if(heart_count == 100)
+	if(heart_count == 33)
 	{
 		heart_count = 0; 
 		heart_led = !heart_led;

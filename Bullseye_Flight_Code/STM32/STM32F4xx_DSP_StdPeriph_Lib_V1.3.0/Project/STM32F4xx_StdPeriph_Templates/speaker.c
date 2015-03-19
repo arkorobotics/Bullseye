@@ -21,15 +21,16 @@
 DAC_InitTypeDef  			DAC_InitStructure;
 
 uint16_t aSine12bit[32] = {
-                      2047, 2447, 2831, 3185, 3498, 3750, 3939, 4056, 4095, 4056,
-                      3939, 3750, 3495, 3185, 2831, 2447, 2047, 1647, 1263, 909, 
-                      599, 344, 155, 38, 0, 38, 155, 344, 599, 909, 1263, 1647};
-
-static int moo_count = 0;
+                       0, 0, 0, 0, 0, 0, 0, 0, 
+										   0, 0, 0, 0, 0, 0, 0, 0,
+										   0, 0, 0, 0, 0, 0, 0, 0, 
+										   0, 0, 0, 0, 0, 0, 0, 0};
 											
 __IO uint8_t ubSelectedWavesForm = 1;
 __IO uint8_t ubKeyPressed = SET; 
 
+uint8_t obstacle_front_flag = 0;
+											 
 void Speaker_Config(void)
 {
 	SpeakerGPIO_Config();
@@ -150,27 +151,23 @@ static void DAC_Ch2_SineWaveConfig(void)
 	DAC_DMACmd(DAC_Channel_2, ENABLE);
 }
 
-void Moo(void)
+void Moo_OFF(void)
 {
-	moo_count++;
-	if(moo_count==8000000)
-	{
-		memcpy(aSine12bit, (uint16_t [32]){0, 0, 0, 0, 0, 0, 0, 0, 
+	memcpy(aSine12bit, (uint16_t [32]){0, 0, 0, 0, 0, 0, 0, 0, 
 										   0, 0, 0, 0, 0, 0, 0, 0,
 										   0, 0, 0, 0, 0, 0, 0, 0, 
 										   0, 0, 0, 0, 0, 0, 0, 0}, 
 										   32*sizeof(uint16_t));
-	}
-	else if(moo_count==12000000)
-	{
-		memcpy(aSine12bit, (uint16_t [32]){2047, 2447, 2831, 3185, 3498, 
+}
+
+void Moo_ON(void)
+{											 
+	memcpy(aSine12bit, (uint16_t [32]){2047, 2447, 2831, 3185, 3498, 
 										   3750, 3939, 4056, 4095, 4056,
 										   3939, 3750, 3495, 3185, 2831, 
 										   2447, 2047, 1647, 1263, 909, 
 										   599, 344, 155, 38, 0, 38, 
 										   155, 344, 599, 909, 1263, 1647}, 
 										   32*sizeof(uint16_t));
-		moo_count=0;
-	}
 }
 /////////////////////////////////////////////////////////////////////////////
