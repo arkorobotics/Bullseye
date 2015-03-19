@@ -163,7 +163,7 @@ int sonar_read_count = 0;
 /////////////////////////////////////////////////////////////////////////////
 // IMU - Variables
 /////////////////////////////////////////////////////////////////////////////
-int imu_read_delay = 10;
+int imu_read_delay = 1;
 int imu_read_count = 0;
 
 void TimingDelay_Decrement(void);
@@ -651,7 +651,7 @@ void SysTick_Handler(void)
 	else
 	{
 		IMU_Update();
-		heading = heading + (gyro[2] - gyro_z_cal)*dt;
+		heading = heading + (gyro[2] - gyro_z_cal)*0.005;
 		imu_read_count = 0;
 	}
 
@@ -674,7 +674,7 @@ void SysTick_Handler(void)
 	// Heartbeat
 	/////////////////////////////////////////////////////////////////////////////
 	heart_count = heart_count + 1;
-	if(heart_count == 1000)
+	if(heart_count == 100)
 	{
 		heart_count = 0; 
 		heart_led = !heart_led;

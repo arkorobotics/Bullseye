@@ -124,30 +124,35 @@ int main(void)
 					else if(10.0 <= AverageDistance_Left && AverageDistance_Left < 60.0)
 					{
 						SetDirection_Forward();
-						CMD_Left = 1510;
-						CMD_Right = 1500;
+						CMD_Left = 2400;
+						CMD_Right = 2400;
 						//gyro_enable = 1;
 						CMD_Theta = 0.00;
 					}
-					else if(60.0 <= AverageDistance_Left && AverageDistance_Left < 120.0)
+					else if(60.0 <= AverageDistance_Left && AverageDistance_Left < 260.0)
 					{
 						//gyro_enable = 0;
 						CMD_Theta = 0.00;
 					}
-					else if(120.0 <= AverageDistance_Left && AverageDistance_Left < 435.0)
+					else if(260.0 <= AverageDistance_Left && AverageDistance_Left < 550.0)
 					{
 						//gyro_enable = 1;
-						CMD_Theta = 0.50; 
+						CMD_Theta = 0.00; 
 					}
-					else if(435.0 <= AverageDistance_Left)
+					else if(550.0 <= AverageDistance_Left)
 					{
 						//gyro_enable = 1;
 						CMD_Left = 0;
 						CMD_Right = 0;
 						SetDirection_Backward();
-						Delay(20);					
-						CMD_Left = 1510;
-						CMD_Right = 1500;
+						Delay(20);
+						SetLeftFrontWheelPwm(60);
+						SetLeftBackWheelPwm(60);
+						SetRightFrontWheelPwm(60);
+						SetRightBackWheelPwm(60);				
+						Delay(5);
+						CMD_Left = 2400;
+						CMD_Right = 2400;
 						CMD_Theta = 0.00; 
 						flip_status = 1;
 					}
@@ -158,7 +163,7 @@ int main(void)
 					{
 						//gyro_enable = 1;
 						SetDirection_Backward();
-						CMD_Theta = 1.00; 
+						CMD_Theta = 0.00; 
 					}
 					else if(1200.0 <= AverageDistance_Left)
 					{
@@ -166,7 +171,7 @@ int main(void)
 						SetDirection_Forward();
 						CMD_Left = 0;
 						CMD_Right = 0;
-						CMD_Theta = 1.00; 
+						CMD_Theta = 0.00; 
 					}
 				}
 				
@@ -217,4 +222,3 @@ void TimingDelay_Decrement(void){
     uwTimingDelay--;
   }
 }
-

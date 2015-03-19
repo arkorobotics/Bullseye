@@ -823,6 +823,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>flip_status,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>25</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>CMD_Theta</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

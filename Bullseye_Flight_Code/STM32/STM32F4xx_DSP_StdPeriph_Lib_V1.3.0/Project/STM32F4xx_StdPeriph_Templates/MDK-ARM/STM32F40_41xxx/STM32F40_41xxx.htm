@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\STM32F40_41xxx\STM32F40_41xxx.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\STM32F40_41xxx\STM32F40_41xxx.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Wed Mar 18 00:23:03 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Wed Mar 18 18:07:04 2015
 <BR><P>
 <H3>Maximum Stack Usage =        196 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -957,7 +957,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 242 bytes, Stack size 24 bytes, stm32f4xx_it.o(i.SysTick_Handler))
+<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 234 bytes, Stack size 24 bytes, stm32f4xx_it.o(i.SysTick_Handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 188<LI>Call Chain = SysTick_Handler &rArr; IMU_Update &rArr; I2cRead &rArr; I2CInit &rArr; I2C_Init &rArr; RCC_GetClocksFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
@@ -1307,7 +1307,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IMU_Init
 </UL>
 
-<P><STRONG><a name="[5c]"></a>main</STRONG> (Thumb, 740 bytes, Stack size 16 bytes, main.o(i.main))
+<P><STRONG><a name="[5c]"></a>main</STRONG> (Thumb, 760 bytes, Stack size 16 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 196<LI>Call Chain = main &rArr; CalibrateIMU &rArr; IMU_Update &rArr; I2cRead &rArr; I2CInit &rArr; I2C_Init &rArr; RCC_GetClocksFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
@@ -1386,7 +1386,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Speaker_Config
 </UL>
 
-<P><STRONG><a name="[a9]"></a>SpeakerGPIO_Config</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, speaker.o(i.SpeakerGPIO_Config))
+<P><STRONG><a name="[a9]"></a>SpeakerGPIO_Config</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, speaker.o(i.SpeakerGPIO_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = SpeakerGPIO_Config &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
