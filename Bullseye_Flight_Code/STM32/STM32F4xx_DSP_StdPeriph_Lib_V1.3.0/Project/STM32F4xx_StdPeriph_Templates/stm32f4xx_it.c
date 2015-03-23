@@ -669,7 +669,7 @@ void SysTick_Handler(void)
 	}
 	else
 	{
-		I2cSonarRead(0x52, sonarBuffer, 2);
+		//I2cSonarRead(0x52, sonarBuffer, 2);
 		sonar_read_count = 0;
 	}
 	

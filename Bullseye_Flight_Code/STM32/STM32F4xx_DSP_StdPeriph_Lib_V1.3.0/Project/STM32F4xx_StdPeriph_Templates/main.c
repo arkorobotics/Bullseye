@@ -44,6 +44,8 @@ void TimingDelay_Decrement(void);
 
 uint8_t run = 0;
 uint8_t gyro_enable = 0; 
+
+uint32_t flip_count = 0;
 uint8_t flip_status = 0;
 
 typedef enum { TUG_OF_WAR, RELAY_RACE, OBSTACLE_RACE, MOO, ROUND_UP, WAYPOINT } state_mode;
@@ -51,7 +53,7 @@ typedef enum { TUG_OF_WAR, RELAY_RACE, OBSTACLE_RACE, MOO, ROUND_UP, WAYPOINT } 
 /////////////////////////////////////////////////////////////////////////////
 // CURRENT MODE
 /////////////////////////////////////////////////////////////////////////////
-state_mode current_state = ROUND_UP;
+state_mode current_state = ROUND_UP;  // Comment out sonar when not used
 /////////////////////////////////////////////////////////////////////////////
 
 int main(void)
@@ -100,10 +102,8 @@ int main(void)
 		{
 			case TUG_OF_WAR:
 				SetDirection_Forward();
-				SetLeftFrontWheelPwm(80);
-				SetLeftBackWheelPwm(80);
-				SetRightFrontWheelPwm(80);
-				SetRightBackWheelPwm(80);
+				CMD_Left = 3600;
+				CMD_Right = 3600;
 				break;
 			case RELAY_RACE:
 				if(flip_status == 0)
@@ -132,23 +132,37 @@ int main(void)
 						//gyro_enable = 0;
 						CMD_Theta = 0.00;
 					}
-					else if(260.0 <= AverageDistance_Left && AverageDistance_Left < 625.0)
+					else if(260.0 <= AverageDistance_Left && AverageDistance_Left < 635.0)
 					{
 						//gyro_enable = 1;
 						CMD_Theta = 0.00; 
 					}
-					else if(625.0 <= AverageDistance_Left)
+					else if(635.0 <= AverageDistance_Left)
 					{
 						//gyro_enable = 1;
 						CMD_Left = 0;
 						CMD_Right = 0;
 						SetDirection_Backward();
-						Delay(20);
+						
+						// Delay 1
+						flip_count = 0;
+						while(flip_count < 1000000)
+						{
+							flip_count++;
+						}
+						
 						SetLeftFrontWheelPwm(60);
 						SetLeftBackWheelPwm(60);
 						SetRightFrontWheelPwm(60);
 						SetRightBackWheelPwm(60);				
-						Delay(5);
+						
+						// Delay 1
+						flip_count = 0;
+						while(flip_count < 1000000)
+						{
+							flip_count++;
+						}
+						
 						CMD_Left = 2400;
 						CMD_Right = 2400;
 						CMD_Theta = 0.00; 
@@ -190,34 +204,13 @@ int main(void)
 				*/
 				break;
 			case MOO:			
-				while(rodeo_count < 500)
+				while(rodeo_count < 100)
 				{
-					if(sonarBuffer[0] <= 100)
-					{
-						if(obstacle_front_flag == 0)
-						{
-							CMD_Left = 0;
-							CMD_Right = 0;
-							Delay(66);
-							obstacle_front_flag = 1;
-						}
-						SetDirection_Backward();
-						CMD_Left = 1500;
-						CMD_Right = 2300;
-						if(sonarBuffer[1] <= 100)
-						{
-							CMD_Left = 0;
-							CMD_Right = 0;
-							Delay(20);
-						}
-					}
-					else
-					{
 						obstacle_front_flag = 0;
 						SetDirection_Forward();
-						CMD_Left = 2000;
+						CMD_Left = 1800;
 						CMD_Right = 1500;
-					}
+					
 				}
 				CMD_Left = 0;
 				CMD_Right = 0;
@@ -229,29 +222,44 @@ int main(void)
 				break;
 			case ROUND_UP:
 				// Go in spirals and do 180's around things in front
-				while(rodeo_count < 500)
+				CMD_Left = 2600;
+				CMD_Right = 2600;
+				
+				// Delay 1
+				flip_count = 0;
+				while(flip_count < 4000000)
 				{
-					if(sonarBuffer[0] <= 100)
-					{
-						CMD_Left = 1400;
-						CMD_Right = 2400;
-						Delay(44);
-						CMD_Left = 2400;
-						CMD_Right = 1400;
-						Delay(88);
-					}
-					else
-					{
-						SetDirection_Forward();
-						CMD_Left = 1800;
-						CMD_Right = 1500;
-					}
+					flip_count++;
 				}
+				
+				CMD_Left = 2600;
+				CMD_Right = 1500;
+				
+				// Delay 2
+				flip_count = 0;
+				while(flip_count < 150000)
+				{
+					flip_count++;
+				}
+			
 				break;
 			case WAYPOINT:
 				SetDirection_Forward();
-				CMD_Left = 1800;
-				CMD_Right = 1500;
+				if(sonarBuffer[0] <= 55)
+				{
+					CMD_Left = 3600;
+					CMD_Right = 1700;
+				}
+				else if(sonarBuffer[0] <= 20)
+				{
+					CMD_Left = 0;
+					CMD_Right = 0;
+				}
+				else
+				{
+					CMD_Left = 3400;
+					CMD_Right = 1700;
+				}
 				break;
 			default:
 				// Turn off motors
